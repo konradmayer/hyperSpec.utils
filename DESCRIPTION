@@ -17,3 +17,5 @@ Suggests:
     rmarkdown,
     styler
 VignetteBuilder: knitr
+URL: https://github.com/konradmayer/hyperSpec.utils
+BugReports: https://github.com/konradmayer/hyperSpec.utils/issues
