@@ -10,12 +10,19 @@ has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 <!-- badges: end -->
 
-The goal of hyperSpec.utils is to …
+This package is a collection of utility functions to work with objects
+of the class `hyperSpec` as defined by the package
+[{hyperspec}](https://cran.r-project.org/package=hyperSpec). The package
+can be considered as work in progress and substantial (also backwards
+incompatible) changes to be expected.
 
 ## Installation
 
-## Example
+You can install trlboku from github with:
 
-``` r
-## basic example code
-```
+    # install.packages("remotes")
+    remotes::install_github("konradmayer/hyperSpec.utils")
+
+## Updating
+
+    remotes::update_packages("konradmayer/hyperSpec.utils")

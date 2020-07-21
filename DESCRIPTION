@@ -1,0 +1,19 @@
+Package: hyperSpec.utils
+Title: Utility functions to work with objects of the hyperSpec class
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Konrad",
+           family = "Mayer",
+           role = c("aut", "cre"),
+           email = "konrad.mayer@boku.ac.at",
+           comment = c(ORCID = "0000-0002-8803-068X"))
+Description: What the package does (one paragraph).
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown,
+    styler
+VignetteBuilder: knitr
