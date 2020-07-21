@@ -18,7 +18,7 @@ incompatible) changes to be expected.
 
 ## Installation
 
-You can install trlboku from github with:
+You can install hyperSpec.utils from github with:
 
     # install.packages("remotes")
     remotes::install_github("konradmayer/hyperSpec.utils")

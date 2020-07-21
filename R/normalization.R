@@ -1,9 +1,21 @@
+#' Normalization
+#'
+#' @description Perform normalization on objects of class \code{hyperSpec}.
+#' @param x A \code{hyperSpec} object
+#' @param band numeric or formula; specifying the band or wavelength range to use for band normalization.
+#' @param FUN character; "mean" or "sum" to select the function to use for the area normalization.  Using "sum", the integral under the spectrum gets 1, using "mean" the spectrum scales with intensities around 1.
+#' @return A \code{hyperSpec} object with normalized intensities
+#' @name normalization
+NULL
+
+#' @rdname normalization
 minmax_normalization <- function(x) {
   tmp <- hyperSpec::sweep(x, 1, min, "-")
   out <- hyperSpec::sweep(x, 1, max, "/")
   out
 }
 
+#' @rdname normalization
 snv_normalization <- function(x) {
   factors1 <- hyperSpec::apply(x, 1, mean)
   tmp <- hyperSpec::sweep(x, 1, factors1, "-")
@@ -11,7 +23,7 @@ snv_normalization <- function(x) {
   out <- hyperSpec::sweep(tmp, 1, factors2, "/")
 }
 
-
+#' @rdname normalization
 vector_normalization <- function(x) {
   factors1 <- hyperSpec::apply(x, 1, mean)
   tmp <- hyperSpec::sweep(x, 1, factors1, "-")
@@ -19,13 +31,13 @@ vector_normalization <- function(x) {
   out <- hyperSpec::sweep(tmp, 1, factors2, "/")
 }
 
-
+#' @rdname normalization
 area_normalization <- function(x, FUN = c("mean", "sum")) {
   FUN <- match.fun(match.arg(FUN))
   hyperSpec::sweep(x, 1, FUN, "/")
 }
 
-
+#' @rdname normalization
 band_normalization <- function(x, band) {
   stopifnot(is_formula(band) | (is.numeric(band) & (length(band) == 1)))
   factors <- hyperSpec::apply(x[, , band], 1, mean)

@@ -19,3 +19,4 @@ Suggests:
 VignetteBuilder: knitr
 URL: https://github.com/konradmayer/hyperSpec.utils
 BugReports: https://github.com/konradmayer/hyperSpec.utils/issues
+RoxygenNote: 7.1.0

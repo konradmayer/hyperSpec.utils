@@ -1,8 +1,24 @@
 
+#' Interactive spectral map explorer
+#'
+#' @description Shiny app to interactively explore spatially resolved \code{hyperSpec} objects.
+#' @param hyperspec_obj A \code{hyperSpec} object with variables "x" and "y" in \code{@data}.
+#' @param fixed_y logical or numeric; if TRUE the initial y axis range is set to the intensity range of the complete dataset until the axis is manually modified or autoscale activated; alternatively provide a numeric vector of length 2 to set a fixed y range; if FALSE autoscale is activated.
+#' @param flip logical; if TRUE the x and y axes are transposed.
+#' @param startband numeric; band for the displayed image at startup.
+#' @param metavar character; a variable in \code{@data} can be selected as an alternative to the intensity map (e.g. to display cluster results).
+#' @export
+
 spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startband = 1600, metavar = NULL) {
 
+  # input validation
+  if(!is_hyperSpecMap(hyperspec_obj)) {stop("Please provide a hyperSpec object with variables 'x' and 'y' in @data")}
+  stopifnot(is.logical(flip))
+  stopifnot(is.logical(fixed_y) | (is.numeric(fixed_y) & (length(fixed_y) == 2)))
+  stopifnot(is.numeric(startband) & (length(startband) == 1))
+
+
   # todo
-  # - add controls for colorramp
   # - explicitely call functions from namespace and remove require calls
   # - get rid of double click action
   # - use labels stored in hyperspec object
