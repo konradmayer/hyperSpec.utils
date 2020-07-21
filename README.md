@@ -12,9 +12,9 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 
 This package is a collection of utility functions to work with objects
 of the class `hyperSpec` as defined by the package
-[{hyperspec}](https://cran.r-project.org/package=hyperSpec). The package
+[{hyperSpec}](https://cran.r-project.org/package=hyperSpec). The package
 can be considered as work in progress and substantial (also backwards
-incompatible) changes to be expected.
+incompatible) changes are to be expected.
 
 ## Installation
 

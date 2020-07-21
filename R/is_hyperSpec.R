@@ -8,11 +8,13 @@
 NULL
 
 #' @rdname is_hyperSpec
+#' @export
 is_hyperSpec <- is.hyperSpec <- function(x) {
   inherits(x, "hyperSpec")
 }
 
 #' @rdname is_hyperSpec
+#' @export
 is_hyperSpecMap <- is.hyperSpecMap <- function(x) {
-  inherits(x, "hyperSpec") & all(c('x', 'y') %in% names(x@data))
+  inherits(x, "hyperSpec") & all(c("x", "y") %in% names(x@data))
 }

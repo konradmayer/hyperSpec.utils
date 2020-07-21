@@ -9,6 +9,7 @@
 NULL
 
 #' @rdname normalization
+#' @export
 minmax_normalization <- function(x) {
   tmp <- hyperSpec::sweep(x, 1, min, "-")
   out <- hyperSpec::sweep(x, 1, max, "/")
@@ -16,6 +17,7 @@ minmax_normalization <- function(x) {
 }
 
 #' @rdname normalization
+#' @export
 snv_normalization <- function(x) {
   factors1 <- hyperSpec::apply(x, 1, mean)
   tmp <- hyperSpec::sweep(x, 1, factors1, "-")
@@ -24,6 +26,7 @@ snv_normalization <- function(x) {
 }
 
 #' @rdname normalization
+#' @export
 vector_normalization <- function(x) {
   factors1 <- hyperSpec::apply(x, 1, mean)
   tmp <- hyperSpec::sweep(x, 1, factors1, "-")
@@ -32,12 +35,14 @@ vector_normalization <- function(x) {
 }
 
 #' @rdname normalization
+#' @export
 area_normalization <- function(x, FUN = c("mean", "sum")) {
   FUN <- match.fun(match.arg(FUN))
   hyperSpec::sweep(x, 1, FUN, "/")
 }
 
 #' @rdname normalization
+#' @export
 band_normalization <- function(x, band) {
   stopifnot(is_formula(band) | (is.numeric(band) & (length(band) == 1)))
   factors <- hyperSpec::apply(x[, , band], 1, mean)
