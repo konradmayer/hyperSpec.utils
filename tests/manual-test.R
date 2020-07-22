@@ -49,3 +49,16 @@ testarray <- spcmap2array(spcmap)
 testarray %>% dim() # x, y should multiply to 8100 pixels; 1024 wavelengths
 testarray %>% class() # should be array
 attributes(testarray) %>% str() # should contain dim and wavelengths
+
+
+# spcmap_explorer ---------------------------------------------------------
+
+# plotly cant deal with expressions - therefore i change the labels in chondro
+chondro2 <- chondro
+chondro2@label$x <- "testx"
+chondro2@label$y <- "testy"
+chondro2@label$.wavelength <- "testwavenumber"
+chondro2@label$spc <- "testintensity"
+chondro2@label$clusters <- "testclusters"
+spcmap_explorer(chondro2, startband = 1450)
+spcmap_explorer(chondro2, metavar = "clusters")

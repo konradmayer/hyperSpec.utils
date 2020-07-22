@@ -22,8 +22,8 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
 
   # todo
   # - explicitely call functions from namespace and remove require calls
-  # - get rid of double click action
-  # - use labels stored in hyperspec object
+  # - get rid of the event_register warning
+  # - consistent naming (use spc, wl for specplot)
   # - in far future: add region selections instead of single bands; band height ratios (right click?)
 
 
@@ -32,7 +32,7 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
   require(plotly)
   require(hyperSpec)
 
-  global_y_limits <- range(hyperspec_obj[[]])
+
   if (!is.null(metavar)) {
     hyperspec_obj@data[, metavar] <- as.numeric(hyperspec_obj@data[, metavar])
   }
@@ -44,7 +44,7 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
       fluidRow(
         column(6, "Spectral map explorer", id = "big-heading"),
         column(3,
-          sliderInput("col_slider", "intensity range",
+          sliderInput("col_slider", "colorramp range",
             min = 0, max = 100,
             value = c(0, 100), round = 0
           ),
@@ -60,17 +60,43 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
     ),
     server = function(input, output, session) {
 
+      # fix labels -------------------------------------------------------------
+      if (any(vapply(hyperspec_obj@label, is.expression, logical(1)))) {
+        warning("One or multiple labels of the provided of hyperSpec object contained an expression which plotly can't handle - it is now replaced by a default label which may be not applicable")
+      }
+      xlabel <- ifelse((is.expression(hyperspec_obj@label$x) | !any("x" %in% names(hyperspec_obj@label)) | is.null(hyperspec_obj@label$x)),
+        "x",
+        hyperspec_obj@label$x
+      )
+      ylabel <- ifelse((is.expression(hyperspec_obj@label$y) | !any("y" %in% names(hyperspec_obj@label)) | is.null(hyperspec_obj@label$y)),
+        "y",
+        hyperspec_obj@label$y
+      )
+      wllabel <- ifelse((is.expression(hyperspec_obj@label$.wavelength) | !any(".wavelength" %in% names(hyperspec_obj@label)) | is.null(hyperspec_obj@label$.wavelength)),
+        "wavenumber",
+        hyperspec_obj@label$.wavelength
+      )
+      spclabel <- ifelse((is.expression(hyperspec_obj@label$spc) | !any("spc" %in% names(hyperspec_obj@label)) | is.null(hyperspec_obj@label$spc)),
+        "intensity",
+        hyperspec_obj@label$spc
+      )
 
+      hyperspec_obj@label$x <- xlabel
+      hyperspec_obj@label$y <- ylabel
+      hyperspec_obj@label$.wavelength <- wllabel
+      hyperspec_obj@label$spc <- spclabel
 
-      # init reactive variables -------------------------------------------------
-      click <- reactiveVal() # click on x,y position on map to extract spectrum
+      # init reactive variables ------------------------------------------------
+
       xselect <- reactiveVal() # derived x value from click()
       yselect <- reactiveVal() # derived y value from click()
 
-      band <- reactiveVal() # click on position on spectrum to extract wavenumber
-
       layout_var <- reactiveVal() # variable to store dynamic layout changes on spectrumplot
+      layout_var_raster <- reactiveVal() # variable to store dynamic layout changes on raster map plot
+
       xrange_start <- range(hyperspec_obj@wavelength)
+      global_y_limits <- range(hyperspec_obj[[]])
+
       if (is.numeric(fixed_y) && (length(fixed_y) == 2)) {
         yrange_start <- fixed_y
       } else if (fixed_y) {
@@ -78,10 +104,9 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
       } else {
         yrange_start <- NULL
       }
-      xrange <- reactiveVal(xrange_start) # start values for spectral plot (before dynamic update through "plotly_relayout")
+      xrange <- reactiveVal(value = xrange_start) # start values for spectral plot (before dynamic update through "plotly_relayout")
       yrange <- reactiveVal(value = yrange_start) # start values for spectral plot (before dynamic update through "plotly_relayout")
 
-      layout_var_raster <- reactiveVal() # variable to store dynamic layout changes on raster map plot
 
       if (flip) {
         xrange_raster_start <- range(hyperspec_obj@data$y)
@@ -123,16 +148,16 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
           raster_plt_title <- paste0("map for variable: ", metavar)
         } else {
           z <- ~ spc[, 1]
-          raster_plt_title <- paste0("intensity map for wavenumber: ", bandselect)
+          raster_plt_title <- paste0("intensity map for ", wllabel, " ", bandselect)
         }
         if (flip) {
           x <- ~y
           y <- ~x
-          template <- "<b>X</b>: %{y:.2f}<br><b>Y</b>: %{x:.2f}<br><b>Intensity</b>: %{z:.2f}<extra></extra>"
+          template <- paste0("<b>", ylabel, "</b>: %{x:.2f}<br><b>", xlabel, "</b>: %{y:.2f}<br><b>", spclabel, "</b>: %{z:.2f}<extra></extra>")
         } else {
           x <- ~x
           y <- ~y
-          template <- "<b>X</b>: %{x:.2f}<br><b>Y</b>: %{y:.2f}<br><b>Intensity</b>: %{z:.2f}<extra></extra>"
+          template <- paste0("<b>", xlabel, "</b>: %{x:.2f}<br><b>", ylabel, "</b>: %{y:.2f}<br><b>", spclabel, "</b>: %{z:.2f}<extra></extra>")
         }
 
         colsliderpos <- input$col_slider
@@ -152,9 +177,12 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
           plotly::layout(
             xaxis = list(
               range = xrange_raster(), autorange = "FALSE",
-              scaleanchor = "y"
+              scaleanchor = "y", title = ifelse(flip, ylabel, xlabel)
             ),
-            yaxis = list(range = yrange_raster(), autorange = "FALSE"),
+            yaxis = list(
+              range = yrange_raster(), autorange = "FALSE",
+              title = ifelse(flip, xlabel, ylabel)
+            ),
             title = list(
               text = raster_plt_title,
               x = 0.1, font = list(size = 15)
@@ -164,7 +192,7 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
             scrollZoom = TRUE, doubleClick = FALSE, displaylogo = FALSE,
             modeBarButtonsToRemove = removebuttons
           ) %>%
-          colorbar(title = "Intensity")
+          colorbar(title = spclabel)
       })
 
 
@@ -204,8 +232,8 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
           # create plotly object from static plot
           out <- ggplotly(p_tmp, source = "B", tooltip = "text") %>%
             style(text = paste0(
-              "Wavenumber: ", round(p_tmp$data$.wavelength, 2),
-              "<br>", "Intensity: ", round(p_tmp$data$spc, 2)
+              wllabel, ": ", round(p_tmp$data$.wavelength, 2),
+              "<br>", spclabel, ": ", round(p_tmp$data$spc, 2)
             )) %>%
             plotly::layout(
               xaxis = list(range = xrange(), autorange = "FALSE"),
@@ -215,9 +243,9 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
               ),
               title = list(
                 text = paste0(
-                  "spectrum at position x: ",
+                  "spectrum at position ", xlabel, ": ",
                   round(xselect(), 2),
-                  ", y: ",
+                  ", ", ylabel, ": ",
                   round(yselect(), 2)
                 ),
                 x = 0.1, font = list(size = 15)
@@ -246,6 +274,7 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
       click <- reactive({
         event_data("plotly_click", source = "A")
       })
+
       observeEvent(click(), {
         layout_var(event_data("plotly_relayout", source = "B"))
         clicked <- c(as.numeric(click()[["x"]]), as.numeric(click()[["y"]]))
@@ -258,9 +287,11 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
         }
       })
 
+      # as the event_data call on source B is happening here before the plot is called a warning is thrown
       band <- reactive({
         event_data("plotly_click", source = "B")
       })
+
       observeEvent(band(), {
         layout_var(event_data("plotly_relayout", source = "B"))
         layout_var_raster(event_data("plotly_relayout", source = "A"))
