@@ -12,7 +12,7 @@ NULL
 #' @export
 minmax_normalization <- function(x) {
   tmp <- hyperSpec::sweep(x, 1, min, "-")
-  out <- hyperSpec::sweep(x, 1, max, "/")
+  out <- hyperSpec::sweep(tmp, 1, max, "/")
   out
 }
 
@@ -44,7 +44,7 @@ area_normalization <- function(x, FUN = c("mean", "sum")) {
 #' @rdname normalization
 #' @export
 band_normalization <- function(x, band) {
-  stopifnot(is_formula(band) | (is.numeric(band) & (length(band) == 1)))
+  stopifnot(rlang::is_formula(band) | (is.numeric(band) & (length(band) == 1)))
   factors <- hyperSpec::apply(x[, , band], 1, mean)
   hyperSpec::sweep(x, 1, factors, "/")
 }
