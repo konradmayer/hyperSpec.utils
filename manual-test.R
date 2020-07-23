@@ -62,3 +62,21 @@ chondro2@label$spc <- "testintensity"
 chondro2@label$clusters <- "testclusters"
 spcmap_explorer(chondro2, startband = 1450)
 spcmap_explorer(chondro2, metavar = "clusters")
+
+
+# CCR ---------------------------------------------------------------------
+
+chondro_spike <- chondro
+chondro_spike[[20, , 800]] <- 5000
+chondro_spike[[50, , 1400]] <- 4000
+chondro_spike[[50, , 1200]] <- 5000
+
+despiked <- crr(chondro_spike)
+is_spike <- unlist(lapply(despiked$crr, length)) > 0
+
+# did crr find the two correct ones?
+plot(chondro_spike[is_spike,])
+# where are the on the map
+plot(despiked$x, despiked$y, pch = ifelse(is_spike, 4, 1), col = ifelse(is_spike, 'red', 'black'))
+
+

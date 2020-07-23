@@ -1,0 +1,83 @@
+---
+title: "cosmic ray removal"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{cosmic-ray-removal}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+references:
+- id: whitaker2018
+  title: A simple algorithm for despiking Raman spectra
+  author:
+  - family: Whitaker
+    given: Darren A.
+  - family: Hayes
+    given: Kevin
+  container-title: Chemometrics and Intelligent Laboratory Systems
+  volume: 179
+  URL: 'https://doi.org/10.1016/j.chemolab.2018.06.009'
+  DOI: 10.1016/j.chemolab.2018.06.009
+  page: 82-84
+  type: article-journal
+  issued:
+    year: 2018
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7
+)
+
+```
+
+```{r setup, message=FALSE}
+library(hyperSpec)
+library(hyperSpec.utils)
+```
+
+
+CCD detectors are sensitive to cosmic rays. When acquiring Raman spectra, multiple spurious spikes can therefore appear within a measurement. These artifacts are problematic for further analysis and need to be removed.
+`{hyperSpec.utils}` currently includes one very simple implementation by @whitaker2018.
+
+In this vignette, the function is demonstrated on the `chondro` dataset of the package `{hyperSpec}`.
+It does not include any cosmic rays, therefore they are manually introduced at spectra 20 and 50, with one spike around wavenumber 800 for the former and two spikes at wavenumbers 1200 and 1400 at the latter spectrum.
+
+```{r}
+chondro_spike <- chondro
+chondro_spike[[20, , 800]] <- 5000
+chondro_spike[[50, , 1200]] <- 6000
+chondro_spike[[50, , 1400]] <- 4000
+
+```
+
+
+The function `crr()` performs cosmic ray removal [as described by @whitaker2018] and returns a hyperSpec object with spikes removed as well as the data variable `despiked@data$crr` with information on the spike position. Start with higher values for the argument `threshold`, take a look at the selected spectra and iteratively decrease its value to the smallest value possible with no "normal peaks" removed.
+
+```{r}
+despiked <- crr(chondro_spike, threshold = 10)
+```
+
+
+
+We can now find out what spectra contained a spike, at what wavelength they appeared and use this information to visualize the results.
+```{r}
+is_spike <- unlist(lapply(despiked$crr, length)) > 0
+which(is_spike)
+
+(spike_wavelengths <- despiked$crr[is_spike])
+
+plot(chondro_spike[is_spike,])
+abline(v = unlist(spike_wavelengths), col = rgb(1, 0, 0, 0.5))
+```
+
+
+Using Raman Maps it can also be interesting to see where the identified pixels are on the map.
+```{r, fig.height = 7}
+plot(despiked$x, despiked$y, 
+     pch = ifelse(is_spike, 4, 1), 
+     col = ifelse(is_spike, 'red', 'black'))
+```
+
+# References
