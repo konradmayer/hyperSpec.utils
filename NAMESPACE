@@ -3,6 +3,7 @@
 export(area_normalization)
 export(band_normalization)
 export(crr)
+export(cubeview)
 export(is_hyperSpec)
 export(is_hyperSpecMap)
 export(minmax_normalization)
