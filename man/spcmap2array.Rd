@@ -4,10 +4,12 @@
 \alias{spcmap2array}
 \title{hyperSpec map to array}
 \usage{
-spcmap2array(x)
+spcmap2array(x, set_dimnames = FALSE)
 }
 \arguments{
 \item{x}{A \code{hyperSpec} object with variables "x" and "y" in \code{@data}.}
+
+\item{set_dimnames}{logical; specify whether values for x, y and wavelength should be used as dimnames.}
 }
 \value{
 An array with the dimensions "x" "y" and "nwl", with the wavelength vector attached as an attribute.
