@@ -21,7 +21,7 @@ minmax_normalization <- function(x) {
 snv_normalization <- function(x) {
   factors1 <- hyperSpec::apply(x, 1, mean)
   tmp <- hyperSpec::sweep(x, 1, factors1, "-")
-  factors2 <- hyperSpec::apply(x, 1, sd)
+  factors2 <- hyperSpec::apply(x, 1, stats::sd)
   out <- hyperSpec::sweep(tmp, 1, factors2, "/")
 }
 

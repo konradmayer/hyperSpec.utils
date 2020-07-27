@@ -15,8 +15,19 @@ Suggests:
     testthat (>= 2.1.0),
     knitr,
     rmarkdown,
-    styler
+    styler,
+    shiny,
+    plotly,
+    raster,
+    cubeview,
+    rasterVis,
+    viridis,
+    rlang
 VignetteBuilder: knitr
 URL: https://github.com/konradmayer/hyperSpec.utils
 BugReports: https://github.com/konradmayer/hyperSpec.utils/issues
 RoxygenNote: 7.1.0
+Imports: 
+    hyperSpec,
+    tools,
+    magrittr

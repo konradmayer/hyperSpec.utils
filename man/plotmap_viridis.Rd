@@ -37,9 +37,6 @@ This can be suppressed manually by setting \code{func} to NULL. It is automatica
 \item{...}{further arguments are passed down the call chain, and finally
 to \code{\link[lattice]{levelplot}}}
 }
-\value{
-
-}
 \description{
 Use the viridis colorramp in plotmap as default. The model can
   contain the special column name .wavelength to specify the wavelength axis.

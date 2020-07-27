@@ -37,7 +37,8 @@ library(hyperSpec.utils)
 
 # This example uses the chondro dataset contained in {hyperSpec}
 
-# prepare a list for meta info in real world units calculated from values of the hyperSpec object
+# prepare a list for meta info in real world units calculated from values of
+# the hyperSpec object
 scan_params <- list(
   ScanUnit = "µm",
   ScanWidth = diff(range(chondro$x)) + 1,
@@ -49,17 +50,26 @@ scan_params <- list(
 
 # write asci graph for chondro
 write.txt.Witec.Graph(chondro,
-  file = "~/Desktop/test/testwitecgraphout_chondro.txt",
+  file = "graphascii_chondro.txt",
   graphname = "chondro", scan_params = scan_params
 )
 
 # you can now use the data in external software (e.g. ImageLab),
-# but you can also reimport it again - note that the import function from {hyperSpec} reads in using pixel units rather than "real world units" (um in this case)
-chondro_reimport <- read.txt.Witec.Graph("~/Desktop/test/testwitecgraphout_chondro (Header).txt", encoding = "latin1", type = "map")
-chondro_reimport$y <- -chondro_reimport$y # y axis is flipped after reimport - you may correct this
-
-# compare original and reimport - note the differing scales (um in the original, px in the reimport; in this case 1um is represented by 1px)
-plotmap(chondro, xlab = "", ylab = "") # real world units used here with -11.55, -4.77 as the origin and an image size of 35x25um
-plotmap(chondro_reimport, xlab = "", ylab = "") # not that pixel units are used here with pixel 1,1 being the origin and an image size of 35x25px
+# but you can also reimport it again - note that the import function from
+# {hyperSpec} reads in using pixel units rather than "real world units"
+# (um in this case)
+chondro_reimport <- read.txt.Witec.Graph("graphascii_chondro (Header).txt",
+encoding = "latin1", type = "map")
+# y axis is flipped after reimport - you may correct this
+chondro_reimport$y <- -chondro_reimport$y
+# compare original and reimport - note the differing scales
+# (um in the original, px in the reimport;
+# in this case 1um is represented by 1px)
+plotmap(chondro, xlab = "", ylab = "")
+# real world units used here with
+# -11.55, -4.77 as the origin and an image size of 35x25um
+plotmap(chondro_reimport, xlab = "", ylab = "")
+# not that pixel units are used here with pixel 1,1 being the
+# origin and an image size of 35x25px
 }
 }

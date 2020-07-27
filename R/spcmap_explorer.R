@@ -7,6 +7,7 @@
 #' @param flip logical; if TRUE the x and y axes are transposed.
 #' @param startband numeric; band for the displayed image at startup.
 #' @param metavar character; a variable in \code{@data} can be selected as an alternative to the intensity map (e.g. to display cluster results).
+#' @importFrom magrittr "%>%"
 #' @export
 
 spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startband = 1600, metavar = NULL) {
@@ -27,7 +28,6 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
   # - in far future: add region selections instead of single bands; band height ratios (right click?)
 
 
-  require(tidyverse)
   require(shiny)
   require(plotly)
   require(hyperSpec)
@@ -210,7 +210,7 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
 
           # static plot using ggplot
           p_tmp <- hyperspec_obj[selection, , ] %>%
-            qplotspc() +
+            hyperSpec::qplotspc() +
             theme_minimal()
 
           # update x and y range
