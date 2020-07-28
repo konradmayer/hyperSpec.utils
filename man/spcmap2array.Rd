@@ -4,12 +4,14 @@
 \alias{spcmap2array}
 \title{hyperSpec map to array}
 \usage{
-spcmap2array(x, set_dimnames = FALSE)
+spcmap2array(x, set_dimnames = FALSE, sort = FALSE)
 }
 \arguments{
 \item{x}{A \code{hyperSpec} object with variables "x" and "y" in \code{@data}.}
 
 \item{set_dimnames}{logical; specify whether values for x, y and wavelength should be used as dimnames.}
+
+\item{sort}{logical; specify whether dimensions x (increasing), y (decreasing) and wavelengths (increasing) should be sorted prior conversion.}
 }
 \value{
 An array with the dimensions "x" "y" and "nwl", with the wavelength vector attached as an attribute.
