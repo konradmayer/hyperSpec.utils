@@ -59,7 +59,8 @@ write.txt.Witec.Graph(chondro,
 # {hyperSpec} reads in using pixel units rather than "real world units"
 # (um in this case)
 chondro_reimport <- read.txt.Witec.Graph("graphascii_chondro (Header).txt",
-encoding = "latin1", type = "map")
+  encoding = "latin1", type = "map"
+)
 # y axis is flipped after reimport - you may correct this
 chondro_reimport$y <- -chondro_reimport$y
 # compare original and reimport - note the differing scales

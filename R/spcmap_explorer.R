@@ -22,15 +22,9 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
 
 
   # todo
-  # - explicitely call functions from namespace and remove require calls
   # - get rid of the event_register warning
   # - consistent naming (use spc, wl for specplot)
   # - in far future: add region selections instead of single bands; band height ratios (right click?)
-
-
-  require(shiny)
-  require(plotly)
-  require(hyperSpec)
 
 
   if (!is.null(metavar)) {
@@ -38,24 +32,24 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
   }
   removebuttons <- c("sendDataToCloud", "toggleSpikelines", "resetScale2d", "hoverClosestCartesian", "hoverCompareCartesian")
 
-  shinyApp(
-    ui = fluidPage(
-      tags$style(HTML("#big-heading{background-color: lightgray; padding: 20px; border-radius: 5px; text-align: right; font-size: 30px;}")),
-      fluidRow(
-        column(6, "Spectral map explorer", id = "big-heading"),
-        column(3,
-          sliderInput("col_slider", "colorramp range",
+  shiny::shinyApp(
+    ui = shiny::fluidPage(
+      shiny::tags$style(shiny::HTML("#big-heading{background-color: lightgray; padding: 20px 40px 20px 20px; border-radius: 0px 40px 10px 0px; text-align: right; font-size: 30px;}")),
+      shiny::fluidRow(
+        shiny::column(6, "Spectral map explorer", id = "big-heading"),
+        shiny::column(3,
+          shiny::sliderInput("col_slider", "colorramp range",
             min = 0, max = 100,
             value = c(0, 100), round = 0
           ),
           offset = 1
         ),
-        column(2, div(actionButton("close", "Close app"),
+        shiny::column(2, shiny::div(shiny::actionButton("close", "Close app"),
           style = "position: relative; top: 50%; -webkit-transform: translateY(50%); -ms-transform: translateY(50%); transform: translateY(50%);"
         ))
       ),
-      plotlyOutput("plot"),
-      plotlyOutput("plotspc") # ,
+      plotly::plotlyOutput("plot"),
+      plotly::plotlyOutput("plotspc") # ,
       # verbatimTextOutput("doubleclick"),
     ),
     server = function(input, output, session) {
@@ -88,11 +82,11 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
 
       # init reactive variables ------------------------------------------------
 
-      xselect <- reactiveVal() # derived x value from click()
-      yselect <- reactiveVal() # derived y value from click()
+      xselect <- shiny::reactiveVal() # derived x value from click()
+      yselect <- shiny::reactiveVal() # derived y value from click()
 
-      layout_var <- reactiveVal() # variable to store dynamic layout changes on spectrumplot
-      layout_var_raster <- reactiveVal() # variable to store dynamic layout changes on raster map plot
+      layout_var <- shiny::reactiveVal() # variable to store dynamic layout changes on spectrumplot
+      layout_var_raster <- shiny::reactiveVal() # variable to store dynamic layout changes on raster map plot
 
       xrange_start <- range(hyperspec_obj@wavelength)
       global_y_limits <- range(hyperspec_obj[[]])
@@ -104,8 +98,8 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
       } else {
         yrange_start <- NULL
       }
-      xrange <- reactiveVal(value = xrange_start) # start values for spectral plot (before dynamic update through "plotly_relayout")
-      yrange <- reactiveVal(value = yrange_start) # start values for spectral plot (before dynamic update through "plotly_relayout")
+      xrange <- shiny::reactiveVal(value = xrange_start) # start values for spectral plot (before dynamic update through "plotly_relayout")
+      yrange <- shiny::reactiveVal(value = yrange_start) # start values for spectral plot (before dynamic update through "plotly_relayout")
 
 
       if (flip) {
@@ -115,15 +109,15 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
         xrange_raster_start <- range(hyperspec_obj@data$x)
         yrange_raster_start <- range(hyperspec_obj@data$y)
       }
-      xrange_raster <- reactiveVal(value = xrange_raster_start) # start values for raster map plot (before dynamic update through "plotly_relayout")
-      yrange_raster <- reactiveVal(value = yrange_raster_start) # start values for raster map plot (before dynamic update through "plotly_relayout")
+      xrange_raster <- shiny::reactiveVal(value = xrange_raster_start) # start values for raster map plot (before dynamic update through "plotly_relayout")
+      yrange_raster <- shiny::reactiveVal(value = yrange_raster_start) # start values for raster map plot (before dynamic update through "plotly_relayout")
 
 
 
 
       # raster map plot ---------------------------------------------------------
 
-      output$plot <- renderPlotly({
+      output$plot <- plotly::renderPlotly({
 
         # update axis ranges if map is zoomed of panned
         if (!is.null(layout_var_raster())) {
@@ -144,7 +138,7 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
 
         # if metavar is provided as an argument use it instead of band. Assign x y and z to the respective vectors
         if (!is.null(metavar)) {
-          z <- as.formula(paste0("~", metavar))
+          z <- stats::as.formula(paste0("~", metavar))
           raster_plt_title <- paste0("map for variable: ", metavar)
         } else {
           z <- ~ spc[, 1]
@@ -188,17 +182,17 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
               x = 0.1, font = list(size = 15)
             )
           ) %>%
-          config(
+          plotly::config(
             scrollZoom = TRUE, doubleClick = FALSE, displaylogo = FALSE,
             modeBarButtonsToRemove = removebuttons
           ) %>%
-          colorbar(title = spclabel)
+          plotly::colorbar(title = spclabel)
       })
 
 
       # spectrum plot -----------------------------------------------------------
 
-      output$plotspc <- renderPlotly({
+      output$plotspc <- plotly::renderPlotly({
         if (!is.null(click())) {
 
           # on click plot selected spectrum (x and y coordinates have to be equal up to a set tolerance)
@@ -211,7 +205,7 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
           # static plot using ggplot
           p_tmp <- hyperspec_obj[selection, , ] %>%
             hyperSpec::qplotspc() +
-            theme_minimal()
+            ggplot2::theme_minimal()
 
           # update x and y range
           if (!is.null(layout_var()$`xaxis.range[0]`)) {
@@ -230,8 +224,8 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
           }
 
           # create plotly object from static plot
-          out <- ggplotly(p_tmp, source = "B", tooltip = "text") %>%
-            style(text = paste0(
+          out <- plotly::ggplotly(p_tmp, source = "B", tooltip = "text") %>%
+            plotly::style(text = paste0(
               wllabel, ": ", round(p_tmp$data$.wavelength, 2),
               "<br>", spclabel, ": ", round(p_tmp$data$spc, 2)
             )) %>%
@@ -251,7 +245,7 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
                 x = 0.1, font = list(size = 15)
               )
             ) %>%
-            config(
+            plotly::config(
               scrollZoom = TRUE, doubleClick = FALSE, displaylogo = FALSE,
               modeBarButtonsToRemove = removebuttons
             )
@@ -259,7 +253,7 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
           # draw vertical line ###bugfix necessary - update when autorange is pressed (otherwise too short if autorange zooms out)
           if (!is.null(band()[["x"]])) {
             out <- out %>%
-              add_segments(
+              plotly::add_segments(
                 x = band()[["x"]], xend = band()[["x"]],
                 y = yrange()[1], yend = yrange()[2]
               )
@@ -271,12 +265,12 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
       })
 
       # update reactive variables when map is clicked or band selected
-      click <- reactive({
-        event_data("plotly_click", source = "A")
+      click <- shiny::reactive({
+        plotly::event_data("plotly_click", source = "A")
       })
 
-      observeEvent(click(), {
-        layout_var(event_data("plotly_relayout", source = "B"))
+      shiny::observeEvent(click(), {
+        layout_var(plotly::event_data("plotly_relayout", source = "B"))
         clicked <- c(as.numeric(click()[["x"]]), as.numeric(click()[["y"]]))
         if (flip) {
           xselect(clicked[[2]])
@@ -288,22 +282,22 @@ spcmap_explorer <- function(hyperspec_obj, fixed_y = TRUE, flip = FALSE, startba
       })
 
       # as the event_data call on source B is happening here before the plot is called a warning is thrown
-      band <- reactive({
-        event_data("plotly_click", source = "B")
+      band <- shiny::reactive({
+        plotly::event_data("plotly_click", source = "B")
       })
 
-      observeEvent(band(), {
-        layout_var(event_data("plotly_relayout", source = "B"))
-        layout_var_raster(event_data("plotly_relayout", source = "A"))
-        updateSliderInput(session, "col_slider", value = c(0, 100))
+      shiny::observeEvent(band(), {
+        layout_var(plotly::event_data("plotly_relayout", source = "B"))
+        layout_var_raster(plotly::event_data("plotly_relayout", source = "A"))
+        shiny::updateSliderInput(session, "col_slider", value = c(0, 100))
       })
 
       # stop app if browser is closed
-      session$onSessionEnded(stopApp)
+      session$onSessionEnded(shiny::stopApp)
 
       # close button
-      observeEvent(input$close, {
-        stopApp()
+      shiny::observeEvent(input$close, {
+        shiny::stopApp()
       })
 
 

@@ -22,7 +22,8 @@ Suggests:
     cubeview,
     rasterVis,
     viridis,
-    rlang
+    rlang,
+    ggplot2
 VignetteBuilder: knitr
 URL: https://github.com/konradmayer/hyperSpec.utils
 BugReports: https://github.com/konradmayer/hyperSpec.utils/issues
@@ -30,4 +31,5 @@ RoxygenNote: 7.1.0
 Imports: 
     hyperSpec,
     tools,
-    magrittr
+    magrittr,
+    methods

@@ -2,7 +2,7 @@
 #'
 #' @param x hyperSpec object with variables "x" and "y" present in \code{@data}.
 #'
-#' @return a named vector with the number of x and y positions as well as the number of descrete wavelengths ("nwl")
+#' @return a named vector with the number of x and y positions as well as the number of descrete wavelengths ("nwl").
 #' @export
 #'
 #' @examples
@@ -38,7 +38,7 @@ aggregate_wl <- function(x, FUN = "mean", ...) {
   FUN <- match.fun(FUN)
   # replace lapply with vapply here?
   tmp <- lapply(aggregates, function(.x) hyperSpec::apply(x[, , .x], 1, FUN))
-  out <- hyperSpec:::cbind.hyperSpec(tmp)
+  out <- do.call(cbind, tmp)
   colnames(out$spc) <- names(aggregates)
   out
 }

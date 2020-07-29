@@ -10,7 +10,7 @@ spcmap_dim(x)
 \item{x}{hyperSpec object with variables "x" and "y" present in \code{@data}.}
 }
 \value{
-a named vector with the number of x and y positions as well as the number of descrete wavelengths ("nwl")
+a named vector with the number of x and y positions as well as the number of descrete wavelengths ("nwl").
 }
 \description{
 Dimensions of a hyperSpec map
