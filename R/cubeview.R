@@ -10,6 +10,7 @@
 #'   If you use the function inside RStudio, the Viewer pane may not display the cube.
 #'   In that case, click on "Show in new window" to open it in a browser.
 #' @param x a hyperSpec object.
+#' @param ... additional arguments passed on to \code{cubeview::cubeview()}.
 #' @export
 #'
 #' @examples
@@ -18,6 +19,6 @@
 #' library(hyperSpec.utils)
 #' cubeview(chondro)
 #' }
-cubeview <- function(x) {
-  cubeview::cubeview(raster::brick(spcmap2array(x)))
+cubeview <- function(x, ...) {
+  cubeview::cubeview(raster::brick(spcmap2array(x)), ...)
 }

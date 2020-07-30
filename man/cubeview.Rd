@@ -4,10 +4,12 @@
 \alias{cubeview}
 \title{cubeview for hyperSpec objects}
 \usage{
-cubeview(x)
+cubeview(x, ...)
 }
 \arguments{
 \item{x}{a hyperSpec object.}
+
+\item{...}{additional arguments passed on to \code{cubeview::cubeview()}.}
 }
 \description{
 This function is a wrapper for the function
