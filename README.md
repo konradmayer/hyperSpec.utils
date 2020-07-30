@@ -31,7 +31,7 @@ You can install hyperSpec.utils from github with:
 
 ## What is yet to come?
 
-Multiple additional funtions are currently planned and ideas are added
+Multiple additional functions are currently planned and ideas are added
 to the [issues](https://github.com/konradmayer/hyperSpec.utils/issues)
 section with an [![label:
 enhancement](https://img.shields.io/badge/-enhancement-84b6eb.svg)](https://github.com/konradmayer/hyperspec.utils/issues?q=label%3Aenhancement)
@@ -42,3 +42,32 @@ If you have more ideas for useful functions, please open an
 appropriate tag, or, even better, open a [pull
 request](https://github.com/konradmayer/hyperspec.utils/pulls) to
 propose your ideas on a possible implementation.
+
+## What is included?
+
+The package will get continuously extended and currently holds functions
+
+  - being convenient shortcuts for already existing functionality
+    (e.g. for normalization `minmax_normalization()`,
+    `snv_normalization()`, `vector_normalization)`,
+    `area_normalization()` and `band_normalization()`, for band
+    aggregation resp. integration `aggregate_wl()`, for plotting with
+    the viridis color scale `plotmap_viridis()`)
+  - introducing new functionality (`crr()` for cosmic ray removal as
+    defined in and provided with [this
+    publication](https://doi.org/10.1016/j.chemolab.2018.06.009) by
+    Whitaker et al. 2018, a S4 method for `diff()` or extending the test
+    functions of `{hyperSpec}` by the simple `is.hyperSpec()` and
+    `is.hyperSpecMap()` for consistency with the respective `{base}`
+    functions, returning a logical value in all cases)
+  - for extended import and export (currently only to export to Witec
+    ASCII graph format `write.txt.Witec.Graph()`, import of OPUS binary
+    files is planned)
+  - with focus on spatially resolved spectral data (spectral maps; such
+    as `spcmap2array()` to get an array of the spectral hypercube,
+    `spcmap_dim()`, `is_hyperSpecMap()` as well as most visualization
+    functions)
+  - for interactive visualization (e.g. `spcmap_explorer()`, which is
+    demonstrated below, and `cubeview()`)
+
+![](man/figures/spcmap_explorer.gif)
