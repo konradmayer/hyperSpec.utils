@@ -1,5 +1,5 @@
 ---
-title: "hyperSpec-utils"
+title: "Introduction to hyperSpec.utils"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{hyperSpec-utils}
@@ -10,10 +10,124 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 7
 )
 ```
 
-```{r setup}
+
+
+***
+
+Please read the [vignettes provided with the package `{hyperSpec}`](https://hyperspec.r-forge.r-project.org/documentation.html), as this package builts upon its functionality and class definition.
+
+If you have any suggestions for new features or found bugs in the code, documentation or vignettes please file an issue at the package [GitHub repository](https://github.com/konradmayer/hyperSpec.utils/issues)!
+
+***
+
+# Introduction
+
+The package `{hyperSpec.utils}` is a collection of functions to be used with objects of the `hyperSpec` class. While it is independent from the popular [`{hyperSpec}`](https://cran.r-project.org/package=hyperSpec) package (written by Claudia Beleites), the package defining the class and including extensive functionality, `{hyperSpec.utils}` intends to add some convenient shortcuts for data analysis, some more conversion, import and export functions, tools for interactive data exploration, as well as some extended functionality (such as cosmic ray removal), especially focussing on spatially resolved spectral data (spectral maps).
+
+
+# Basic example (preprocessing) workflow
+
+First, we need to load the libraries:
+
+```{r setup, message=FALSE}
+library(hyperSpec)
 library(hyperSpec.utils)
 ```
+
+The dataset `chondro`, contained in the package [`{hyperSpec}`](http://hyperspec.r-forge.r-project.org/), is used to demonstrate how `{hyperSpec.utils}` can be incorporated into an analysis workflow.
+
+We'll first artificially introduce some spikes to the data, as the dataset does not contain any. However, spikes due to cosmic rays are usually present in Raman measurements using a CCD detector.
+
+```{r}
+chondro_spike <- chondro
+chondro_spike[[20, , 800]] <- 5000
+chondro_spike[[50, , 1400]] <- 4000
+chondro_spike[[50, , 1200]] <- 5000
+plotspc(chondro_spike[c(20, 50), ])
+
+```
+
+Now we have two spectra with spikes (one of them having even two), which appear as very narrow peaks (in this case only a single discrete wavenumber) with very high intensity.
+Next, we'll use the function `crr()` to remove them again. This function is implemented as defined in [this publication](https://doi.org/10.1016/j.chemolab.2018.06.009) by Whitaker et al. 2018 (following the R script provided in the supplementary material).
+
+```{r}
+despiked <- crr(chondro_spike, threshold = 30)
+plotspc(despiked[c(20, 50), ])
+
+# at what ids were spikes detected?
+is_spike <- unlist(lapply(despiked$crr, length)) > 0
+which(is_spike)
+
+#spike wavelengths
+despiked$crr[is_spike]
+```
+
+Cosmic ray removal obviously worked well. The two spectra, where we artificially introduced spikes, were identified with the correct spike positions given in `despiked$crr` (closest discrete wavenumber to the selected wavenumber 800 for spectrum number 20 and 1200 as well as 1400 for spectrum 50).
+
+Lets check whether `despiked` is still an object if class `hyperSpec`.
+```{r}
+is_hyperSpec(despiked)
+```
+
+But is it just a collection of spectra, or a spectral map?
+```{r}
+is_hyperSpecMap(despiked)
+
+# dimensions
+spcmap_dim(despiked)
+
+```
+
+`despiked` is spatially resolved and `spcmap_dim()` provides the dimensions of the (hypothetical) spectral hypercube. While you usually know your data (and therefore also know whether its a spectral map or not) and could have easily looked up whether variables "x" and "y" exist within `despiked@data` the functions `is_*()` resp. their variants (consistent to the resp.\ base functions) `is.*()` are convenient shortcuts for input validation when writing new functions (but also test functions included in `{hyperSpec}` can be used.
+
+
+
+To visualize the spectral map, e.g. for band 1450, we can use a modified version of `plotmap()`, using the [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) color scale as default
+```{r}
+plotmap_viridis(despiked[ , , 1450])
+```
+
+
+Baseline correction can be done using functionality provided by [`{hyperSpec}`](http://hyperspec.r-forge.r-project.org/) or [`{baseline}`](https://cran.r-project.org/package=baseline).
+
+```{r}
+bl <- spc.fit.poly.below(despiked, poly.order = 4)
+baseline_corrected <- despiked - bl
+plotspc(baseline_corrected)
+```
+
+Let's normalize on band 1450
+```{r}
+normalized <- band_normalization(baseline_corrected, 1450)
+plotspc(normalized)
+```
+
+For some analysis not the complete spectra are of interest, but aggregations of certain bands
+```{r}
+aggregated <- aggregate_wl(normalized, "mean", 
+                           band_a = 1020 ~ 1300, 
+                           band_b = 1430 ~ 1470, 
+                           band_c = 1002)
+head(aggregated[[]])
+```
+
+Or we may want to calculate first differences:
+```{r}
+first_differences <- diff(normalized)
+plotspc(first_differences)
+```
+
+
+Sometimes it is convenient to use the spectral hypercube of a spectral map as an array, e.g. to be used with tools for [image analysis](https://bioconductor.org/packages/release/bioc/vignettes/EBImage/inst/doc/EBImage-introduction.html) or [image registration](https://github.com/jonclayden/RNiftyReg) (Be careful: do image registration only in the two spatial dimensions as you usually don't want to transform the wavenumber dimension!), or the functionality in various packages for remote sensing (e.g. using the classes defined in [{raster}](https://rspatial.org/raster/) by further conversion of the array - e.g. `raster::brick(spcmap2array(normalized))` - with extended plotting options in [{rasterVis}](https://oscarperpinan.github.io/rastervis/#intro))
+
+```{r}
+spc_array <- spcmap2array(normalized)
+dim(spc_array)
+class(spc_array)
+```
+

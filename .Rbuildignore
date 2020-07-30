@@ -5,3 +5,5 @@
 ^README\.Rmd$
 ^_pkgdown\.yml$
 manual-test.R
+^doc$
+^Meta$
