@@ -7,3 +7,6 @@
 manual-test.R
 ^doc$
 ^Meta$
+man/figures/hexsticker-files
+^docs$
+^pkgdown$

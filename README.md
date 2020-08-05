@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# hyperSpec.utils
+# hyperSpec.utils <img src="man/figures/hexsticker.png" align="right" alt="" width="180" />
 
 <!-- badges: start -->
 
@@ -10,7 +10,7 @@ has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 <!-- badges: end -->
 
-This package is a collection of utility functions to work with objects
+This R package is a collection of utility functions to work with objects
 of the class `hyperSpec` as defined by the package
 [{hyperSpec}](https://cran.r-project.org/package=hyperSpec). While it is
 independent from the popular
@@ -28,6 +28,10 @@ You can install hyperSpec.utils from github with:
 
     # install.packages("remotes")
     remotes::install_github("konradmayer/hyperSpec.utils")
+
+Use the argument `dependencies = TRUE` to also install suggested
+dependencies, mainly needed for the function `spcmap_explorer()`, as
+well as individual plotting, import/export and conversion functions.
 
 ## What is yet to come?
 
@@ -68,6 +72,33 @@ The package will get continuously extended and currently holds functions
     `spcmap_dim()`, `is_hyperSpecMap()` as well as most visualization
     functions)
   - for interactive visualization (e.g. `spcmap_explorer()`, which is
-    demonstrated below, and `cubeview()`)
+    demonstrated below, and
+`cubeview()`)
 
-![](man/figures/spcmap_explorer.gif)
+<img src="man/figures/spcmap_explorer.gif" width="700px" style="display: block; margin: auto;" />
+
+# Acknowledgments
+
+<table>
+
+<tr>
+
+<td>
+
+<img src="man/figures/bionami.png" width="350">
+
+</td>
+
+<td>
+
+This package was developed at the
+<a href="http://www.bionami.at/">BIONAMI</a> (biological materials at
+the nano and micro scale) group at the University of Natural Resources
+and Life Sciences, Vienna, Institute for Biophysics, with funding from
+the European community (ERC-consolidator grant SCATAPNUT 681885).
+
+</td>
+
+</tr>
+
+</table>

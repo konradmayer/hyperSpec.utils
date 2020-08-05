@@ -1,0 +1,15 @@
+//Exported ASCII-File
+[Header]
+FileName = \\141.244.97.184\raman2\6 Team\14 Konrad\15 konrad\34-1-A_segmentation_CRR.wip
+GraphName = 34.1.A_LP35mW_IT0.05_T20_2004EW_023_Spec.Data1_CRR
+SizeX = 60
+SizeY = 60
+SizeGraph = 1024
+ScanUnit = µm
+ScanWidth = 20
+ScanHeight = 20
+ScanOriginX = 5485.80302664652
+ScanOriginY = 2549.90492547501
+ScanOriginZ = 0
+XAxisUnit = rel. 1/cm
+DataUnit = CCD cts

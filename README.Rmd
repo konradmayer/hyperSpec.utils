@@ -12,13 +12,14 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# hyperSpec.utils
+
+# hyperSpec.utils <img src="man/figures/hexsticker.png" align="right" alt="" width="180" />
 
 <!-- badges: start -->
 [![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 <!-- badges: end -->
 
-This package is a collection of utility functions to work with objects of the class `hyperSpec` as defined by the package [{hyperSpec}](https://cran.r-project.org/package=hyperSpec). While it is independent from the popular [{hyperSpec}](https://cran.r-project.org/package=hyperSpec) package (written by Claudia Beleites), `{hyperSpec.utils}` intends to add some convenient shortcuts for data analysis, some more conversion, import and export functions, tools for interactive data exploration, as well as some extended functionality (such as cosmic ray removal).
+This R package is a collection of utility functions to work with objects of the class `hyperSpec` as defined by the package [{hyperSpec}](https://cran.r-project.org/package=hyperSpec). While it is independent from the popular [{hyperSpec}](https://cran.r-project.org/package=hyperSpec) package (written by Claudia Beleites), `{hyperSpec.utils}` intends to add some convenient shortcuts for data analysis, some more conversion, import and export functions, tools for interactive data exploration, as well as some extended functionality (such as cosmic ray removal).
 The package can be considered as work in progress and substantial (also backwards incompatible) changes are to be expected.
 
 ## Installation
@@ -29,6 +30,8 @@ You can install hyperSpec.utils from github with:
 # install.packages("remotes")
 remotes::install_github("konradmayer/hyperSpec.utils")
 ```
+
+Use the argument `dependencies = TRUE` to also install suggested dependencies, mainly needed for the function `spcmap_explorer()`, as well as individual plotting, import/export and conversion functions.
 
 ## What is yet to come? 
 Multiple additional functions are currently planned and ideas are added to the [issues](https://github.com/konradmayer/hyperSpec.utils/issues) section with an [![label: enhancement][~enhancement]](https://github.com/konradmayer/hyperspec.utils/issues?q=label%3Aenhancement) label attached.
@@ -48,6 +51,21 @@ The package will get continuously extended and currently holds functions
 - for interactive visualization (e.g. `spcmap_explorer()`, which is demonstrated below, and `cubeview()`)
 
 
-![](man/figures/spcmap_explorer.gif)
+```{r, out.width="700px", fig.align='center', echo=FALSE}
+knitr::include_graphics("man/figures/spcmap_explorer.gif")
+```
+
 
 [~enhancement]: https://img.shields.io/badge/-enhancement-84b6eb.svg
+
+# Acknowledgments
+
+
+<table>
+ <tr>
+    <td><img src="man/figures/bionami.png" width="350"></td>
+    <td>This package was developed at the  <a href="http://www.bionami.at/">BIONAMI</a> (biological materials at the nano and micro scale) group at the University of Natural Resources and Life Sciences, Vienna, Institute for Biophysics, with funding from the European community (ERC-consolidator grant SCATAPNUT 681885).</td>
+ </tr>
+</table>
+
+
