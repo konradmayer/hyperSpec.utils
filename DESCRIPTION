@@ -23,7 +23,8 @@ Suggests:
     rasterVis,
     viridis,
     rlang,
-    ggplot2
+    ggplot2,
+    hexView
 VignetteBuilder: knitr
 URL: https://github.com/konradmayer/hyperSpec.utils
 BugReports: https://github.com/konradmayer/hyperSpec.utils/issues
