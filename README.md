@@ -65,8 +65,8 @@ The package will get continuously extended and currently holds functions
     `is.hyperSpecMap()` for consistency with the respective `{base}`
     functions, returning a logical value in all cases)
   - for extended import and export (export to Witec ASCII graph format
-    `write.txt.Witec.Graph()`, import of OPUS binary files
-    `read_opus()`)
+    with `write.txt.Witec.Graph()` or to JCAMP-DX with `write_jdx()`,
+    import of OPUS binary files with `read_opus()`)
   - with focus on spatially resolved spectral data (spectral maps; such
     as `spcmap2array()` to get an array of the spectral hypercube,
     `spcmap_dim()`, `is_hyperSpecMap()` as well as most visualization
