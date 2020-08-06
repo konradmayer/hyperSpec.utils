@@ -17,7 +17,7 @@ an object of class hyperSpec with cosmic rays removed.
 \description{
 Cosmic spikes are often appearing in Raman spectra which were
   aquired using CCD detectors and need to be removed before further analysis.
-  This function is implemented using the R code provided with Whitaker et al. 2018.
+  This function is implemented using the R code provided with Whitaker and Hayes 2018.
 }
 \examples{
 \dontrun{

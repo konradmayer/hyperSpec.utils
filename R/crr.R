@@ -1,6 +1,6 @@
 
 # helpers for crr ---------------------------------------------------------
-## as given in the supplement of from https://doi.org/10.1016/j.chemolab.2018.06.009
+## as given in the supplement of https://doi.org/10.1016/j.chemolab.2018.06.009
 
 #  Function to calculate modified Z Scores
 
@@ -11,7 +11,7 @@ modified_z_score <- function(x) {
   z
 }
 
-# Function to annihalate spikes at locations z
+# Function to remove spikes at locations z
 
 fix_spikes_moving_average <- function(y, z, ma = 5) {
   n <- length(y)
@@ -31,7 +31,7 @@ fix_spikes_moving_average <- function(y, z, ma = 5) {
 #'
 #' @description Cosmic spikes are often appearing in Raman spectra which were
 #'   aquired using CCD detectors and need to be removed before further analysis.
-#'   This function is implemented using the R code provided with Whitaker et al. 2018.
+#'   This function is implemented using the R code provided with Whitaker and Hayes 2018.
 #' @param x an object of class hyperSpec.
 #' @param threshold numeric.
 #' @references Whitaker, Darren A., Hayes Kevin,

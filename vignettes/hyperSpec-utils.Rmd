@@ -83,7 +83,7 @@ spcmap_dim(despiked)
 
 ```
 
-`despiked` is spatially resolved and `spcmap_dim()` provides the dimensions of the (hypothetical) spectral hypercube. While you usually know your data (and therefore also know whether its a spectral map or not) and could have easily looked up whether variables "x" and "y" exist within `despiked@data` the functions `is_*()` resp. their variants (consistent to the resp.\ base functions) `is.*()` are convenient shortcuts for input validation when writing new functions (but also test functions included in `{hyperSpec}` can be used.
+`despiked` is spatially resolved and `spcmap_dim()` provides the dimensions of the (hypothetical) spectral hypercube. While you usually know your data (and therefore also know whether its a spectral map or not) and could have easily looked up whether variables "x" and "y" exist within `despiked@data` the functions `is_*()` resp. their variants (consistent to the resp.\ base functions) `is.*()` are convenient shortcuts for input validation when writing new functions (but also test functions included in `{hyperSpec}` can be used).
 
 
 

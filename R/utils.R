@@ -42,3 +42,19 @@ aggregate_wl <- function(x, FUN = "mean", ...) {
   colnames(out$spc) <- names(aggregates)
   out
 }
+
+
+
+#' Plotting Spectra
+#'
+#' @description Simple wrapper for \code{\link[hyperSpec]{plotspc}} to execute
+#'   the function with reversed x-axis as default.
+#' @inheritParams hyperSpec::plotspc
+#' @param ... additional arguments handed to \code{\link[hyperSpec]{plotspc}}.
+#' @inherit hyperSpec::plotspc return
+#' @author NULL
+#' @export
+
+plotspc_rev <- function(object, ...) {
+  hyperSpec::plotspc(object, wl.reverse = TRUE, ...)
+}

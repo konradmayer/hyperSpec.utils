@@ -60,8 +60,8 @@ The package will get continuously extended and currently holds functions
   - introducing new functionality (`crr()` for cosmic ray removal as
     defined in and provided with [this
     publication](https://doi.org/10.1016/j.chemolab.2018.06.009) by
-    Whitaker et al. 2018, a S4 method for `diff()` or extending the test
-    functions of `{hyperSpec}` by the simple `is.hyperSpec()` and
+    Whitaker and Hayes 2018, a S4 method for `diff()` or extending the
+    test functions of `{hyperSpec}` by the simple `is.hyperSpec()` and
     `is.hyperSpecMap()` for consistency with the respective `{base}`
     functions, returning a logical value in all cases)
   - for extended import and export (export to Witec ASCII graph format

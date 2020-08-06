@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • hyperSpec.utils</title>
+<title>Plotting Spectra — plotspc_rev • hyperSpec.utils</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Plotting Spectra — plotspc_rev" />
+<meta property="og:description" content="Simple wrapper for plotspc to execute
+  the function with reversed x-axis as default." />
 
 
 
@@ -58,7 +60,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -126,120 +128,51 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Plotting Spectra</h1>
+    <small class="dont-index">Source: <a href='https://github.com/konradmayer/hyperSpec.utils/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>plotspc_rev.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Simple wrapper for <code><a href='https://rdrr.io/pkg/hyperSpec/man/plotspc.html'>plotspc</a></code> to execute
+  the function with reversed x-axis as default.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>plotspc_rev</span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="aggregate_wl.html">aggregate_wl()</a></code> </p>
-        </td>
-        <td><p>Aggregate wavelengths</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="crr.html">crr()</a></code> </p>
-        </td>
-        <td><p>Cosmic ray removal</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cubeview.html">cubeview()</a></code> </p>
-        </td>
-        <td><p>cubeview for hyperSpec objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="diff-hyperSpec-method.html">diff(<i>&lt;hyperSpec&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>differences on hyperSpec spectra (S4 method)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_hyperSpec.html">is_hyperSpec()</a></code> <code><a href="is_hyperSpec.html">is_hyperSpecMap()</a></code> </p>
-        </td>
-        <td><p>Test if the object is of class hyperSpec</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="normalization.html">minmax_normalization()</a></code> <code><a href="normalization.html">snv_normalization()</a></code> <code><a href="normalization.html">vector_normalization()</a></code> <code><a href="normalization.html">area_normalization()</a></code> <code><a href="normalization.html">band_normalization()</a></code> </p>
-        </td>
-        <td><p>Normalization</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plotmap_viridis.html">plotmap_viridis()</a></code> </p>
-        </td>
-        <td><p>Plotmap using viridis</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plotspc_rev.html">plotspc_rev()</a></code> </p>
-        </td>
-        <td><p>Plotting Spectra</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="read_opus.html">read_opus()</a></code> </p>
-        </td>
-        <td><p>Read Bruker OPUS binary files</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="read_opus_single.html">read_opus_single()</a></code> </p>
-        </td>
-        <td><p>Import a single Bruker OPUS binary file</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="spcmap2array.html">spcmap2array()</a></code> </p>
-        </td>
-        <td><p>hyperSpec map to array</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="spcmap_dim.html">spcmap_dim()</a></code> </p>
-        </td>
-        <td><p>Dimensions of a hyperSpec map</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="spcmap_explorer.html">spcmap_explorer()</a></code> </p>
-        </td>
-        <td><p>Interactive spectral map explorer</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="write.txt.Witec.Graph.html">write.txt.Witec.Graph()</a></code> </p>
-        </td>
-        <td><p>Export to Witec ASCII Graph format</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>the <code>hyperSpec</code> object</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments handed to <code><a href='https://rdrr.io/pkg/hyperSpec/man/plotspc.html'>plotspc</a></code>.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>plotspc</code> invisibly returns a list with</p>
+<dt>x</dt><dd><p>the abscissa coordinates of the plotted spectral data points</p></dd>
+
+<dt>y</dt><dd><p>a matrix the ordinate coordinates of the plotted spectral data
+  points</p></dd>
+
+<dt>wavelengths</dt><dd><p>the wavelengths of the plotted spectral data points</p></dd>
+
+This can be used together with <a href='https://rdrr.io/pkg/hyperSpec/man/spc-identify.html'>spc.identify</a>.
+
+a list containing <dt>offsets</dt><dd><p>numeric with the yoffset for each group in
+<code>stacked</code></p></dd> <dt>groups</dt><dd><p>numeric with the group number for each spectrum</p></dd> <dt>levels</dt><dd><p>if
+<code>stacked</code> is a factor, the levels of the groups</p></dd>
+
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
