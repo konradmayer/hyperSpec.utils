@@ -58,3 +58,28 @@ aggregate_wl <- function(x, FUN = "mean", ...) {
 plotspc_rev <- function(object, ...) {
   hyperSpec::plotspc(object, wl.reverse = TRUE, ...)
 }
+
+
+
+#' Test if the wavelength vector of a hyperSpec object is equally spaced
+#'
+#' @param x a hyperSpec object
+#'
+#' @return logical
+#' @export
+is_wl_equidistant <- function(x) {
+  all(diff(sort(hyperSpec::wl(x)), differences = 2) == 0)
+}
+
+
+
+#' Test if the wavelength vector of a hyperSpec object is in order (ascending)
+#'
+#' @param x a hyperSpec object
+#'
+#' @return logical
+#' @export
+is_wl_ordered <- function(x) {
+  wl <- hyperSpec::wl(x)
+  all(wl == sort(wl))
+}

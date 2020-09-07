@@ -34,8 +34,9 @@ opus_read_infoblock <- function(file_path, pr) {
     infoblock_start, infoblock_end
   ) + 12
   infonames_end <- vapply(
-    infonames_start, function(o)
-      grepRaw("\\.?[(I\\d{2})|(T\\d{2})]", pr, all = FALSE, offset = o),
+    infonames_start, function(o) {
+      grepRaw("\\.?[(I\\d{2})|(T\\d{2})]", pr, all = FALSE, offset = o)
+    },
     numeric(1)
   ) + 7
 
@@ -53,21 +54,25 @@ opus_read_infoblock <- function(file_path, pr) {
   }, character(1))
 
   info_start <- vapply(
-    infonames_start, function(o) grepRaw("I\\d{2}", pr,
+    infonames_start, function(o) {
+      grepRaw("I\\d{2}", pr,
         all = FALSE,
         offset = o
-      ),
+      )
+    },
     numeric(1)
   ) + 7
   fields_empty <- info_start == lead1(info_start, 0)
 
   info_start <- info_start[!fields_empty]
   info_end <- vapply(
-    info_start, function(o) grepRaw("\\.*((T\\d{2})|(HIS))",
+    info_start, function(o) {
+      grepRaw("\\.*((T\\d{2})|(HIS))",
         pr,
         all = FALSE,
         offset = o
-      ),
+      )
+    },
     numeric(1)
   )
   nbytes_info <- nbytes_info <- info_end - info_start
@@ -248,9 +253,12 @@ read_opus <- read.opus <- function(file_paths, scale_y = TRUE,
                                    read_info = FALSE, interpolate = FALSE) {
   tmp <- vector("list", length(file_paths))
   for (i in seq_along(file_paths)) {
-    tryCatch({
-      tmp[[i]] <- read_opus_single(file_paths[i], scale_y, read_info)
-    }, error = function(err) {})
+    tryCatch(
+      {
+        tmp[[i]] <- read_opus_single(file_paths[i], scale_y, read_info)
+      },
+      error = function(err) {}
+    )
   }
 
   errors <- vapply(tmp, is.null, logical(1))

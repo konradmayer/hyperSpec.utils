@@ -42,10 +42,12 @@ setMethod(
   f = "diff",
   signature = "hyperSpec",
   definition = function(x, lag = 1, differences = 1) {
-    x@data[["spc"]] <- t(apply(x@data$spc, 1, function(.x) c(
+    x@data[["spc"]] <- t(apply(x@data$spc, 1, function(.x) {
+      c(
         rep(NA, times = differences * lag),
         diff(.x, lag = lag, differences = differences)
-      )))
+      )
+    }))
     hyperSpec::chk.hy(x)
     return(x)
   }
