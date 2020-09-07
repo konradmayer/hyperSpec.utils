@@ -24,11 +24,13 @@ Suggests:
     viridis,
     rlang,
     ggplot2,
-    hexView
+    hexView,
+    ALS,
+    nnls
 VignetteBuilder: knitr
 URL: https://github.com/konradmayer/hyperSpec.utils
 BugReports: https://github.com/konradmayer/hyperSpec.utils/issues
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Imports: 
     hyperSpec,
     tools,
