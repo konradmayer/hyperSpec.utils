@@ -2,7 +2,7 @@
 % Please edit documentation in R/als.R
 \name{als}
 \alias{als}
-\title{Alternating least squares multivariate curve resolution (MCR-ALS)}
+\title{Spectral unmixing: Alternating least squares multivariate curve resolution (MCR-ALS)}
 \usage{
 als(x, ncomp = NULL, S_init = NULL, prefix = "component")
 }
@@ -21,9 +21,10 @@ using \code{\link{opa}}.}
 \value{
 a list with the following components:
   \describe{
-    \item{data}{the inpout hyperSpec object with an additional "component" colunb in @data}
+    \item{data}{the input hyperSpec object with additional "component" columns in @data, holding the coefficients}
     \item{component_spectra}{a hyperSpec object containing the component spectra}
     \item{summary_stats}{a named vector containing lof, rms and r2}
+    \item{fit}{the als fit as returned by the custom wrapper around `ALS::als()`}
   }
 }
 \description{

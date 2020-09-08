@@ -26,7 +26,8 @@ Suggests:
     ggplot2,
     hexView,
     ALS,
-    nnls
+    nnls,
+    NMF
 VignetteBuilder: knitr
 URL: https://github.com/konradmayer/hyperSpec.utils
 BugReports: https://github.com/konradmayer/hyperSpec.utils/issues

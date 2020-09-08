@@ -95,7 +95,7 @@ opa <- function(x, ncomp = NULL, return_scaled = TRUE) {
 
 
 
-#' Alternating least squares multivariate curve resolution (MCR-ALS)
+#' Spectral unmixing: Alternating least squares multivariate curve resolution (MCR-ALS)
 #'
 #' @description This is a wrapper around a modified version of \link[alsace]{doALS}
 #'   from the package {alsace} to be used with objects of class hyperSpec.
@@ -109,9 +109,10 @@ opa <- function(x, ncomp = NULL, return_scaled = TRUE) {
 #'
 #' @return a list with the following components:
 #'   \describe{
-#'     \item{data}{the inpout hyperSpec object with an additional "component" colunb in @data}
+#'     \item{data}{the input hyperSpec object with additional "component" columns in @data, holding the coefficients}
 #'     \item{component_spectra}{a hyperSpec object containing the component spectra}
 #'     \item{summary_stats}{a named vector containing lof, rms and r2}
+#'     \item{fit}{the als fit as returned by the custom wrapper around `ALS::als()`}
 #'   }
 #' @seealso \link[alsace]{doALS}, \link[ALS]{als}
 #' @export
@@ -153,7 +154,6 @@ als <- function(x, ncomp = NULL, S_init = NULL, prefix = "component") {
   class(out) <- "als"
   out
 }
-
 
 summary.als <- function(x) {
   cat(
