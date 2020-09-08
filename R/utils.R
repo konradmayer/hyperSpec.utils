@@ -21,7 +21,7 @@ spcmap_dim <- function(x) {
 
 #' Aggregate wavelengths
 #'
-#' @description select certain bands of aggregate wavelength ranges of a hyperSpec object.
+#' @description select certain bands or aggregate wavelength ranges of a hyperSpec object.
 #' @param x a hyperSpec object.
 #' @param FUN function to be used for aggregation.
 #' @param ... (named) selection of bands or band ranges.

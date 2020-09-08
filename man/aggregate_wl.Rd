@@ -17,7 +17,7 @@ aggregate_wl(x, FUN = "mean", ...)
 a hyperspec object with aggregated spc
 }
 \description{
-select certain bands of aggregate wavelength ranges of a hyperSpec object.
+select certain bands or aggregate wavelength ranges of a hyperSpec object.
 }
 \examples{
 \dontrun{
