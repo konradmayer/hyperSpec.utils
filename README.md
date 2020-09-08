@@ -24,7 +24,7 @@ incompatible) changes are to be expected.
 
 ## Installation
 
-You can install hyperSpec.utils from github with:
+You can install hyperSpec.utils from GitHub with:
 
     # install.packages("remotes")
     remotes::install_github("konradmayer/hyperSpec.utils")
@@ -55,8 +55,8 @@ The package will get continuously extended and currently holds functions
     (e.g. for normalization `minmax_normalization()`,
     `snv_normalization()`, `vector_normalization)`,
     `area_normalization()` and `band_normalization()`, for band
-    aggregation resp. integration `aggregate_wl()`, for plotting with
-    the viridis color scale `plotmap_viridis()`)
+    aggregation `aggregate_wl()` resp. integration `integrate_wl()`
+    plotting with the viridis color scale `plotmap_viridis()`)
   - introducing new functionality (`crr()` for cosmic ray removal as
     defined in and provided with [this
     publication](https://doi.org/10.1016/j.chemolab.2018.06.009) by
@@ -71,9 +71,12 @@ The package will get continuously extended and currently holds functions
     as `spcmap2array()` to get an array of the spectral hypercube,
     `spcmap_dim()`, `is_hyperSpecMap()` as well as most visualization
     functions)
-  - for interactive visualization (e.g. `spcmap_explorer()`, which is
-    demonstrated below, and
-`cubeview()`)
+  - for spectral unmixing (wrappers `als()` for MCR-ALS and `nmf()` for
+    NMF)
+  - for fitting linear combinations of reference spectra
+    (`linear_combination()`)
+  - for interactive visualization (e.g. `spcmap_explorer()`, which is
+    demonstrated below, and `cubeview()`)
 
 <img src="man/figures/spcmap_explorer.gif" width="700px" style="display: block; margin: auto;" />
 

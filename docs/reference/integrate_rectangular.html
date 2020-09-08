@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read Bruker OPUS binary files — read_opus • hyperSpec.utils</title>
+<title>Rectangular (midpoint) integration — integrate_rectangular • hyperSpec.utils</title>
 
 
 <!-- jquery -->
@@ -39,13 +39,8 @@
 
 
 
-<meta property="og:title" content="Read Bruker OPUS binary files — read_opus" />
-<meta property="og:description" content="This function is a wrapper around read_opus_single
-  to import multiple OPUS binary files; supports
-  reading meta data stored in the text information data block. At the current
-  state, no other information (e.g. instrumental parameters) such as INS,
-  LWN, HUM, SRC, BMS, ZFF, DAT, TIM are processed. Consider this function as
-  experimental." />
+<meta property="og:title" content="Rectangular (midpoint) integration — integrate_rectangular" />
+<meta property="og:description" content="Rectangular (midpoint) integration" />
 
 
 
@@ -134,52 +129,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read Bruker OPUS binary files</h1>
-    <small class="dont-index">Source: <a href='https://github.com/konradmayer/hyperSpec.utils/blob/master/R/read_opus.R'><code>R/read_opus.R</code></a></small>
-    <div class="hidden name"><code>read_opus.Rd</code></div>
+    <h1>Rectangular (midpoint) integration</h1>
+    <small class="dont-index">Source: <a href='https://github.com/konradmayer/hyperSpec.utils/blob/master/R/integrate.R'><code>R/integrate.R</code></a></small>
+    <div class="hidden name"><code>integrate_rectangular.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function is a wrapper around <code><a href='read_opus_single.html'>read_opus_single</a></code>
-  to import multiple OPUS binary files; supports
-  reading meta data stored in the text information data block. At the current
-  state, no other information (e.g. instrumental parameters) such as INS,
-  LWN, HUM, SRC, BMS, ZFF, DAT, TIM are processed. Consider this function as
-  experimental.</p>
+    <p>Rectangular (midpoint) integration</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_opus</span>(<span class='kw'>file_paths</span>, scale_y = <span class='fl'>TRUE</span>, read_info = <span class='fl'>FALSE</span>, interpolate = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>integrate_rectangular</span>(<span class='kw'>x</span>, <span class='kw'>y</span>, correct_edges = <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>file_paths</th>
-      <td><p>a character vector of file paths to Bruker OPUS binary
-files</p></td>
+      <th>x</th>
+      <td><p>numeric.</p></td>
     </tr>
     <tr>
-      <th>scale_y</th>
-      <td><p>logical; use the y scaling factor provided within the
-binary file.</p></td>
+      <th>y</th>
+      <td><p>numeric.</p></td>
     </tr>
     <tr>
-      <th>read_info</th>
-      <td><p>logical; read info stored in the text information data
-block.</p></td>
-    </tr>
-    <tr>
-      <th>interpolate</th>
-      <td><p>logical, unify the wavelength axis (interpolate at
-not shared wavelengths) among the individual imported spectra using
-<code><a href='https://rdrr.io/pkg/hyperSpec/man/spc.NA.approx.html'>spc.NA.approx</a></code>. Not necessary if all spectra share
-the same wavelength axis.</p></td>
+      <th>correct_edges</th>
+      <td><p>logical; if set TRUE, the widths of the segments at the
+range edges (the first and last point) are corrected to only incorporate
+the half width to the right, resp. to the left of the point.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a hyperSpec object.</p>
+    <p>numeric; the approximated integral.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

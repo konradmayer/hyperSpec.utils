@@ -85,7 +85,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="interactive_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Interactive data visualization</h1>
@@ -98,27 +98,35 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">hyperSpec</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">hyperSpec.utils</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/cbeleites/hyperSpec">hyperSpec</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/konradmayer/hyperSpec.utils">hyperSpec.utils</a></span>)
+</pre></div>
 <div id="spcmap_explorer" class="section level1">
 <h1 class="hasAnchor">
 <a href="#spcmap_explorer" class="anchor"></a>spcmap_explorer()</h1>
 <p><code><a href="../reference/spcmap_explorer.html">spcmap_explorer()</a></code> can be used to interactively visualize spatially resolved spectral data, to show the spectral map at a certain band and to show a spectrum at a specific pixel location. This way the (hypothetical) spectral hypercube is “sliced” into two very familiar 2D representations.</p>
 <p>Start the app as follows:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/spcmap_explorer.html">spcmap_explorer</a></span>(<span class="no">chondro</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="../reference/spcmap_explorer.html">spcmap_explorer</a></span>(<span class="kw">chondro</span>)
+</pre></div>
 <p>if you have high images it is probably convenient to flip x and y axis of the spectral map.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/spcmap_explorer.html">spcmap_explorer</a></span>(<span class="no">chondro</span>, <span class="kw">flip</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="../reference/spcmap_explorer.html">spcmap_explorer</a></span>(<span class="kw">chondro</span>, flip = <span class="fl">TRUE</span>)
+</pre></div>
 <div id="zoom---select-axis-ranges" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zoom---select-axis-ranges" class="anchor"></a>Zoom - select axis ranges</h2>
 <p>Use your mouse and select the area you want to zoom to by holding the left mouse button.</p>
 <p><img src="spcmap_explorer_zoom.gif" width="500px"></p>
 </div>
-<div id="fixed-scale-vs-autoscale" class="section level2">
+<div id="fixed-scale-vs--autoscale" class="section level2">
 <h2 class="hasAnchor">
-<a href="#fixed-scale-vs-autoscale" class="anchor"></a>Fixed scale vs. autoscale</h2>
+<a href="#fixed-scale-vs--autoscale" class="anchor"></a>Fixed scale vs. autoscale</h2>
 <p>Using the defaults for the argument <code>fixed_y</code>, the y range is scaled to the the range of the complete dataset. Using <code>FALSE</code>, the function is started in autoscale mode, by providing a numeric vector the start range can be set manually for the spectum plot.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/spcmap_explorer.html">spcmap_explorer</a></span>(<span class="no">chondro</span>, <span class="kw">fixed_y</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1200</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="../reference/spcmap_explorer.html">spcmap_explorer</a></span>(<span class="kw">chondro</span>, fixed_y = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1200</span>))
+</pre></div>
 <p>If you want to compare intensities at multiple positions you likely want the y range to stay constant which is the case until you press the autoscale button. The y range is fixed again as soon as you select a new range interactively or pan the axis.</p>
 <p><img src="spcmap_explorer_y-scale.gif" width="500px"></p>
 </div>
@@ -132,11 +140,15 @@
 <div id="cubeview" class="section level1">
 <h1 class="hasAnchor">
 <a href="#cubeview" class="anchor"></a>cubeview()</h1>
-<p>The function <a href="https://github.com/r-spatial/cubeview"><code><a href="../reference/cubeview.html">cubeview()</a></code></a> can be used to interactively explore a spectral hypercube. {hyperSpec.utils} provides a wrapper for the function to use it on hyperspec objects. Use the LEFT / RIGHT arrow keys and DOWN / UP arrow keys to set the slicing positions of the x-axis and y-axis, PAGE_DOWN / PAGE_UP keys for the z-axis. Press SPACE to show or hide guides. Use the left mouse-button to rotate, right mouse button to pan the hypercube. If you use the function inside RStudio, the Viewer pane may not display the cube. In that case, click on “Show in new window” to open it in a browser.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/cubeview.html">cubeview</a></span>(<span class="no">chondro</span>[ , , <span class="fl">700</span>~<span class="fl">800</span>])</pre></body></html></div>
+<p>The function <a href="https://github.com/r-spatial/cubeview"><code>cubeview()</code></a> can be used to interactively explore a spectral hypercube. {hyperSpec.utils} provides a wrapper for the function to use it on hyperspec objects. Use the LEFT / RIGHT arrow keys and DOWN / UP arrow keys to set the slicing positions of the x-axis and y-axis, PAGE_DOWN / PAGE_UP keys for the z-axis. Press SPACE to show or hide guides. Use the left mouse-button to rotate, right mouse button to pan the hypercube. If you use the function inside RStudio, the Viewer pane may not display the cube. In that case, click on “Show in new window” to open it in a browser.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="../reference/cubeview.html">cubeview</a></span>(<span class="kw">chondro</span>[ , , <span class="fl">700</span><span class="op">~</span><span class="fl">800</span>])
+</pre></div>
 <p><img src="cubeview.gif" width="500px"></p>
 <p>In case you prefer the viridis color ramp you can specify it using the argument <code>col.regions</code>.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/cubeview.html">cubeview</a></span>(<span class="no">chondro</span>[ , , <span class="fl">700</span>~<span class="fl">800</span>], <span class="kw">col.regions</span> <span class="kw">=</span> <span class="kw pkg">viridis</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/viridis/man/reexports.html">viridis</a></span>)</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="../reference/cubeview.html">cubeview</a></span>(<span class="kw">chondro</span>[ , , <span class="fl">700</span><span class="op">~</span><span class="fl">800</span>], col.regions = <span class="kw">viridis</span>::<span class="kw"><a href="https://rdrr.io/pkg/viridisLite/man/viridis.html">viridis</a></span>)
+</pre></div>
 </div>
   </div>
 
@@ -155,7 +167,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

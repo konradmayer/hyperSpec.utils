@@ -141,12 +141,12 @@
     </div>
 
     <pre class="usage"><span class='fu'>write.txt.Witec.Graph</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"map"</span>,
-  <span class='kw'>graphname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>scan_params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"latin1"</span>
+  <span class='kw'>x</span>,
+  file = <span class='kw'>NULL</span>,
+  type = <span class='st'>"map"</span>,
+  graphname = <span class='kw'>NULL</span>,
+  scan_params = <span class='kw'>NULL</span>,
+  encoding = <span class='st'>"latin1"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -180,48 +180,49 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>hyperSpec</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>hyperSpec.utils</span>)
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/cbeleites/hyperSpec'>hyperSpec</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/konradmayer/hyperSpec.utils'>hyperSpec.utils</a></span>)
 
 <span class='co'># This example uses the chondro dataset contained in {hyperSpec}</span>
 
 <span class='co'># prepare a list for meta info in real world units calculated from values of</span>
 <span class='co'># the hyperSpec object</span>
-<span class='no'>scan_params</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='kw'>ScanUnit</span> <span class='kw'>=</span> <span class='st'>"µm"</span>,
-  <span class='kw'>ScanWidth</span> <span class='kw'>=</span> <span class='fu'><a href='diff-hyperSpec-method.html'>diff</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='no'>chondro</span>$<span class='no'>x</span>)) + <span class='fl'>1</span>,
-  <span class='kw'>ScanHeight</span> <span class='kw'>=</span> <span class='fu'><a href='diff-hyperSpec-method.html'>diff</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='no'>chondro</span>$<span class='no'>y</span>)) + <span class='fl'>1</span>,
-  <span class='kw'>ScanOriginX</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='no'>chondro</span>$<span class='no'>x</span>),
-  <span class='kw'>ScanOriginY</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='no'>chondro</span>$<span class='no'>y</span>),
-  <span class='kw'>ScanOriginZ</span> <span class='kw'>=</span> <span class='fl'>0</span>
+<span class='kw'>scan_params</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  ScanUnit = <span class='st'>"µm"</span>,
+  ScanWidth = <span class='fu'><a href='diff,hyperSpec-method.html'>diff</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='kw'>chondro</span><span class='op'>$</span><span class='kw'>x</span>)) <span class='op'>+</span> <span class='fl'>1</span>,
+  ScanHeight = <span class='fu'><a href='diff,hyperSpec-method.html'>diff</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='kw'>chondro</span><span class='op'>$</span><span class='kw'>y</span>)) <span class='op'>+</span> <span class='fl'>1</span>,
+  ScanOriginX = <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='kw'>chondro</span><span class='op'>$</span><span class='kw'>x</span>),
+  ScanOriginY = <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='kw'>chondro</span><span class='op'>$</span><span class='kw'>y</span>),
+  ScanOriginZ = <span class='fl'>0</span>
 )
 
 <span class='co'># write asci graph for chondro</span>
-<span class='fu'>write.txt.Witec.Graph</span>(<span class='no'>chondro</span>,
-  <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"graphascii_chondro.txt"</span>,
-  <span class='kw'>graphname</span> <span class='kw'>=</span> <span class='st'>"chondro"</span>, <span class='kw'>scan_params</span> <span class='kw'>=</span> <span class='no'>scan_params</span>
+<span class='fu'>write.txt.Witec.Graph</span>(<span class='kw'>chondro</span>,
+  file = <span class='st'>"graphascii_chondro.txt"</span>,
+  graphname = <span class='st'>"chondro"</span>, scan_params = <span class='kw'>scan_params</span>
 )
 
 <span class='co'># you can now use the data in external software (e.g. ImageLab),</span>
 <span class='co'># but you can also reimport it again - note that the import function from</span>
 <span class='co'># {hyperSpec} reads in using pixel units rather than "real world units"</span>
 <span class='co'># (um in this case)</span>
-<span class='no'>chondro_reimport</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/hyperSpec/man/read.txt.Witec.html'>read.txt.Witec.Graph</a></span>(<span class='st'>"graphascii_chondro (Header).txt"</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"latin1"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"map"</span>
+<span class='kw'>chondro_reimport</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/hyperSpec/man/read.txt.Witec.html'>read.txt.Witec.Graph</a></span>(<span class='st'>"graphascii_chondro (Header).txt"</span>,
+  encoding = <span class='st'>"latin1"</span>, type = <span class='st'>"map"</span>
 )
 <span class='co'># y axis is flipped after reimport - you may correct this</span>
-<span class='no'>chondro_reimport</span>$<span class='no'>y</span> <span class='kw'>&lt;-</span> -<span class='no'>chondro_reimport</span>$<span class='no'>y</span>
+<span class='kw'>chondro_reimport</span><span class='op'>$</span><span class='kw'>y</span> <span class='op'>&lt;-</span> <span class='op'>-</span><span class='kw'>chondro_reimport</span><span class='op'>$</span><span class='kw'>y</span>
 <span class='co'># compare original and reimport - note the differing scales</span>
 <span class='co'># (um in the original, px in the reimport;</span>
 <span class='co'># in this case 1um is represented by 1px)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/hyperSpec/man/levelplot.html'>plotmap</a></span>(<span class='no'>chondro</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/hyperSpec/man/levelplot.html'>plotmap</a></span>(<span class='kw'>chondro</span>, xlab = <span class='st'>""</span>, ylab = <span class='st'>""</span>)
 <span class='co'># real world units used here with</span>
 <span class='co'># -11.55, -4.77 as the origin and an image size of 35x25um</span>
-<span class='fu'><a href='https://rdrr.io/pkg/hyperSpec/man/levelplot.html'>plotmap</a></span>(<span class='no'>chondro_reimport</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/hyperSpec/man/levelplot.html'>plotmap</a></span>(<span class='kw'>chondro_reimport</span>, xlab = <span class='st'>""</span>, ylab = <span class='st'>""</span>)
 <span class='co'># not that pixel units are used here with pixel 1,1 being the</span>
 <span class='co'># origin and an image size of 35x25px</span>
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -237,7 +238,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

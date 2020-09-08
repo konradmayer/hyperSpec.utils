@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Aggregate wavelengths — aggregate_wl" />
-<meta property="og:description" content="select certain bands of aggregate wavelength ranges of a hyperSpec object." />
+<meta property="og:description" content="select certain bands or aggregate wavelength ranges of a hyperSpec object." />
 
 
 
@@ -135,10 +135,10 @@
     </div>
 
     <div class="ref-description">
-    <p>select certain bands of aggregate wavelength ranges of a hyperSpec object.</p>
+    <p>select certain bands or aggregate wavelength ranges of a hyperSpec object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>aggregate_wl</span>(<span class='no'>x</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>aggregate_wl</span>(<span class='kw'>x</span>, FUN = <span class='st'>"mean"</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -162,9 +162,10 @@
     <p>a hyperspec object with aggregated spc</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>aggregate_wl</span>(<span class='no'>chondro</span>, <span class='st'>"mean"</span>, <span class='kw'>band_a</span> <span class='kw'>=</span> <span class='fl'>938</span>, <span class='kw'>band_b</span> <span class='kw'>=</span> <span class='fl'>1230</span> ~ <span class='fl'>1260</span>)
-}</div></pre>
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'>aggregate_wl</span>(<span class='kw'>chondro</span>, <span class='st'>"mean"</span>, band_a = <span class='fl'>938</span>, band_b = <span class='fl'>1230</span> <span class='op'>~</span> <span class='fl'>1260</span>)
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -180,7 +181,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
