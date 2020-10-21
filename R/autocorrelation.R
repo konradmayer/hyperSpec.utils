@@ -30,8 +30,6 @@ spatial_ac <- function(x, neigh = 2, colname = "spatial_ac", ...) {
 #' @return a hyperSpec object such as given for \code{x} with an additional
 #'   column in \code{x@data}.
 #' @export
-#'
-#' @examples
 spectral_ac <- function(x, lag = 1, colname = "spectral_ac") {
   stopifnot(is_hyperSpec(x))
   x[, colname] <- apply(x[[]], 1, function(.x) {
