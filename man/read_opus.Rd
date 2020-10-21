@@ -5,7 +5,13 @@
 \alias{read.opus}
 \title{Read Bruker OPUS binary files}
 \usage{
-read_opus(file_paths, scale_y = TRUE, read_info = FALSE, interpolate = FALSE)
+read_opus(
+  file_paths,
+  scale_y = TRUE,
+  read_info = FALSE,
+  interpolate = FALSE,
+  newx = NULL
+)
 }
 \arguments{
 \item{file_paths}{a character vector of file paths to Bruker OPUS binary
@@ -17,10 +23,15 @@ binary file.}
 \item{read_info}{logical; read info stored in the text information data
 block.}
 
-\item{interpolate}{logical, unify the wavelength axis (interpolate at
-not shared wavelengths) among the individual imported spectra using
+\item{interpolate}{logical, interpolate values at
+not shared wavelengths among the individual imported spectra using
 \code{\link[hyperSpec]{spc.NA.approx}}. Not necessary if all spectra share
-the same wavelength axis.}
+the same wavelength axis or are interpolated onto a common axis using the
+argument \code{newx}. Using \code{newx} should be preferred over
+\code{interpolate} to avoid big resulting
+objects and associated very high computation time.}
+
+\item{newx}{interpolate all spectra onto a common either "first" to use the}
 }
 \value{
 a hyperSpec object.
@@ -31,5 +42,13 @@ This function is a wrapper around \code{\link{read_opus_single}}
   reading meta data stored in the text information data block. At the current
   state, no other information (e.g. instrumental parameters) such as INS,
   LWN, HUM, SRC, BMS, ZFF, DAT, TIM are processed. Consider this function as
-  experimental.
+  experimental and sanity check imported spectra.
+}
+\details{
+When files to import don't share common wavelength vectors, the
+  returned object with a merged wavelength vector will show many missing
+  values. These can be interpolated using the \code{interpolate} argument,
+  but objects will be considerably large. In general its better to provide a
+  new common wavelength axis with \code{newx} or use the one of the first
+  file.
 }

@@ -20,22 +20,26 @@ lead1 <- function(x, pad = NA) {
 }
 
 opus_read_infoblock <- function(file_path, pr) {
-  infoblock_start <- grepRaw("DEFAULT.T01", pr, all = TRUE) + 7
+  infoblock_start <- grepRaw("T01.....(TEXT)|(STRING):", pr, all = FALSE)
+
   if (length(infoblock_start) == 0) {
     stop("Your Bruker OPUS file may not contain any text information data block. Try to import with the argument 'read_info' set to FALSE.")
   }
-  infoblock_end <- grepRaw("\\.?HIS", pr, all = TRUE)
 
+  infoblock_end <- grepRaw("END", pr, offset = infoblock_start)
+
+
+  stringnottext <- length(grepRaw("STRING", pr, all = TRUE)) > length(grepRaw("TEXT", pr, all = TRUE))
   infonames_start <- return_between(
-    grepRaw("T\\d{2}.....TEXT:",
+    grepRaw("T\\d{2}.....(TEXT)|(STRING):",
       pr,
       all = TRUE
     ),
     infoblock_start, infoblock_end
-  ) + 12
+  ) + ifelse(stringnottext, 6, 12)
   infonames_end <- vapply(
     infonames_start, function(o) {
-      grepRaw("\\.?[(I\\d{2})|(T\\d{2})]", pr, all = FALSE, offset = o)
+      grepRaw("(I\\d{2})|(END)|(T\\d{2})", pr, all = FALSE, offset = o)
     },
     numeric(1)
   ) + 7
@@ -53,21 +57,31 @@ opus_read_infoblock <- function(file_path, pr) {
     ))
   }, character(1))
 
+
+
+
   info_start <- vapply(
     infonames_start, function(o) {
-      grepRaw("I\\d{2}", pr,
+      tmp <- grepRaw("I\\d{2}", pr,
         all = FALSE,
         offset = o
       )
+      ifelse(length(tmp) > 0, tmp, infoblock_end)
     },
     numeric(1)
   ) + 7
+
+
+
   fields_empty <- info_start == lead1(info_start, 0)
+  if (utils::tail(info_start, 1) == (infoblock_end + 7)) {
+    fields_empty[length(fields_empty)] <- TRUE
+  }
 
   info_start <- info_start[!fields_empty]
   info_end <- vapply(
     info_start, function(o) {
-      grepRaw("\\.*((T\\d{2})|(HIS))",
+      grepRaw("\\.*((T\\d{2})|(END)|(HIS))",
         pr,
         all = FALSE,
         offset = o
@@ -93,14 +107,37 @@ opus_read_infoblock <- function(file_path, pr) {
 
 
 
-
 opus_read_spectrum <- function(file_path, pr, scale_y = TRUE) {
-  byte_end <- grepRaw("END", pr, all = TRUE) + 11 # ends of blocks
+
+
+  # each OPUS file contains a header block in the beginning of the file
+
+  # the integer at offset 20 specifies the number of data blocks contained
+  # (including the header block)
+  n_blocks_header <- hexView::readRaw(file_path,
+    offset = 5 * 4, nbytes = 4,
+    human = "int", size = 4
+  )[[5]]
+
+  # after the number of data blocks, for each data block 3 values are given, with
+  # the third giving the start offset of the block
+  header_positions <- 4 * (5 + seq_len(n_blocks_header) * 3)
+  block_starts <- vapply(
+    header_positions, function(p) {
+      hexView::readRaw(file_path,
+        offset = p, nbytes = 4,
+        human = "int", size = 4
+      )[[5]]
+    },
+    integer(1)
+  )
+
 
   # read spectrum name
   snm <- grepRaw("SNM", pr, all = TRUE)[1] + 7
-  nbytes_snm <- byte_end[[3]] - snm
+  snm_end <- grepRaw("END", pr, offset = snm, all = FALSE) + 11
   if (!is.na(snm)) {
+    nbytes_snm <- snm_end - snm
     SNM <- hexView::blockString(hexView::readRaw(file_path,
       offset = snm,
       nbytes = nbytes_snm,
@@ -112,12 +149,16 @@ opus_read_spectrum <- function(file_path, pr, scale_y = TRUE) {
     warning(paste(file_path, "did not contain a name for the spectrum"))
   }
 
-  # read spectrum
+  #############################
+  ### read spectrum
+  ############################
 
+  # start positions
   npt_start <- grepRaw("NPT", pr, all = TRUE) + 3 # number of discrete points
   fxv_start <- grepRaw("FXV", pr, all = TRUE) + 7 # wavelength start
   lxv_start <- grepRaw("LXV", pr, all = TRUE) + 7 # wavelength end
 
+  # read scaling factor
   if (scale_y) {
     csf_start <- grepRaw("CSF", pr, all = TRUE) + 7 # y scaling
     CSF <- hexView::readRaw(file_path,
@@ -128,40 +169,41 @@ opus_read_spectrum <- function(file_path, pr, scale_y = TRUE) {
   }
 
 
-
+  # read number of points of the spectrum
   NPT <- hexView::readRaw(file_path,
     offset = npt_start, nbytes = 12,
     human = "int", size = 4
   )[[5]][2]
 
-  if (length(byte_end) == 1) {
-    end_spc <- byte_end
-  } else {
-    end_spc <- byte_end[diff(byte_end) > 4 * min(NPT)]
-  }
-
+  # find the spectrum data block as the one big enough to contain NPT*4 bytes
+  spc_start <- block_starts[diff(block_starts) >= 4 * min(NPT)]
   spc <- hexView::readRaw(file_path,
-    width = NULL, offset = end_spc - 4,
+    width = NULL, offset = spc_start,
     nbytes = NPT * 4, human = "real", size = 4,
     endian = "little"
   )[[5]]
+
+
   if (scale_y) {
     spc <- spc * CSF
   }
 
+  # start of wavelength axis
   FXV <- hexView::readRaw(file_path,
     offset = fxv_start,
     nbytes = 16, human = "real", size = 8
   )[[5]][1]
 
+  # end of wavelength axis
   LXV <- hexView::readRaw(file_path,
     offset = lxv_start,
     nbytes = 16, human = "real", size = 8
   )[[5]][1]
 
+  # compute evenly spaced wavelength axis
   wavenumbers <- rev(seq(
     LXV, FXV,
-    (FXV - LXV) / (NPT - 1)
+    length.out = NPT
   ))
 
   list(wavenumbers = wavenumbers, spectrum = spc, spcname = SNM)
@@ -237,20 +279,31 @@ read_opus_single <- function(file_path, scale_y = TRUE, read_info = FALSE) {
 #'   reading meta data stored in the text information data block. At the current
 #'   state, no other information (e.g. instrumental parameters) such as INS,
 #'   LWN, HUM, SRC, BMS, ZFF, DAT, TIM are processed. Consider this function as
-#'   experimental.
+#'   experimental and sanity check imported spectra.
 #' @inheritParams read_opus_single
+#' @details When files to import don't share common wavelength vectors, the
+#'   returned object with a merged wavelength vector will show many missing
+#'   values. These can be interpolated using the \code{interpolate} argument,
+#'   but objects will be considerably large. In general its better to provide a
+#'   new common wavelength axis with \code{newx} or use the one of the first
+#'   file.
 #' @return a hyperSpec object.
 #' @param file_paths a character vector of file paths to Bruker OPUS binary
 #'   files
-#' @param interpolate logical, unify the wavelength axis (interpolate at
-#'   not shared wavelengths) among the individual imported spectra using
+#' @param interpolate logical, interpolate values at
+#'   not shared wavelengths among the individual imported spectra using
 #'   \code{\link[hyperSpec]{spc.NA.approx}}. Not necessary if all spectra share
-#'   the same wavelength axis.
+#'   the same wavelength axis or are interpolated onto a common axis using the
+#'   argument \code{newx}. Using \code{newx} should be preferred over
+#'   \code{interpolate} to avoid big resulting
+#'   objects and associated very high computation time.
+#' @param newx interpolate all spectra onto a common either "first" to use the
 #' @aliases read.opus
 #' @name read_opus
 #' @export
 read_opus <- read.opus <- function(file_paths, scale_y = TRUE,
-                                   read_info = FALSE, interpolate = FALSE) {
+                                   read_info = FALSE, interpolate = FALSE,
+                                   newx = NULL) {
   tmp <- vector("list", length(file_paths))
   for (i in seq_along(file_paths)) {
     tryCatch(
@@ -269,7 +322,29 @@ read_opus <- read.opus <- function(file_paths, scale_y = TRUE,
     ))
   }
 
-  out <- hyperSpec::collapse(tmp[lengths(tmp) > 0L])
+  if (newx == "first") {
+    tmp[!errors] <- lapply(
+      tmp[!errors],
+      function(.x) {
+        hyperSpec::spc.smooth.spline(.x,
+          newx = hyperSpec::wl(tmp[[1]]),
+          all.knots = TRUE
+        )
+      }
+    )
+  } else if (length(newx) > 0) {
+    tmp[!errors] <- lapply(
+      tmp[!errors],
+      function(.x) {
+        hyperSpec::spc.smooth.spline(.x,
+          newx = newx,
+          all.knots = TRUE
+        )
+      }
+    )
+  }
+
+  out <- hyperSpec::collapse(tmp[lengths(tmp) > 0L], collapse.equal = FALSE)
 
   if (interpolate) {
     out <- hyperSpec::orderwl(out)
