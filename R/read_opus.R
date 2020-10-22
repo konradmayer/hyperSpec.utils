@@ -281,29 +281,30 @@ read_opus_single <- function(file_path, scale_y = TRUE, read_info = FALSE) {
 #'   LWN, HUM, SRC, BMS, ZFF, DAT, TIM are processed. Consider this function as
 #'   experimental and sanity check imported spectra.
 #' @inheritParams read_opus_single
-#' @details When files to import don't share common wavelength vectors, the
-#'   returned object with a merged wavelength vector will show many missing
-#'   values. These can be interpolated using the \code{interpolate} argument,
-#'   but objects will be considerably large. In general its better to provide a
-#'   new common wavelength axis with \code{newx} or use the one of the first
-#'   file.
+#' @details When files to import don't share common wavelength vectors, a
+#'   collapsed hyperSpec object (having a wavelength vector merged from all the
+#'   individual vectors) may become very large with a lot of missing
+#'   values. \code{read_opus()} can interpolate the individual spectra onto a
+#'   common wavelength vector prior collapsing, either by choosing the
+#'   wavelength vector of one of the imported files (giving a single integer) or
+#'   by providing a new wavelength vector. Alternatively, if \code{wl} is
+#'   \code{NULL}, the merged wavelength vector is used, potentially resulting in
+#'   a sparse spectral matrix. If set to "interpolate" the missing values are
+#'   interpolated after using the merged vector.
 #' @return a hyperSpec object.
 #' @param file_paths a character vector of file paths to Bruker OPUS binary
 #'   files
-#' @param interpolate logical, interpolate values at
-#'   not shared wavelengths among the individual imported spectra using
-#'   \code{\link[hyperSpec]{spc.NA.approx}}. Not necessary if all spectra share
-#'   the same wavelength axis or are interpolated onto a common axis using the
-#'   argument \code{newx}. Using \code{newx} should be preferred over
-#'   \code{interpolate} to avoid big resulting
-#'   objects and associated very high computation time.
-#' @param newx interpolate all spectra onto a common either "first" to use the
+#' @param wl numeric; either of length one giving the index of the spectrum to
+#'   use the associated wavelength vector, a numeric vector of length >1
+#'   specifying a new wavelength vector, \code{NULL} to use a merged wavelength
+#'   vector or "interpolate" to interpolate missing values after using the
+#'   merged vector.
 #' @aliases read.opus
 #' @name read_opus
 #' @export
 read_opus <- read.opus <- function(file_paths, scale_y = TRUE,
-                                   read_info = FALSE, interpolate = FALSE,
-                                   newx = NULL) {
+                                   read_info = FALSE,
+                                   wl = 1) {
   tmp <- vector("list", length(file_paths))
   for (i in seq_along(file_paths)) {
     tryCatch(
@@ -322,22 +323,25 @@ read_opus <- read.opus <- function(file_paths, scale_y = TRUE,
     ))
   }
 
-  if (newx == "first") {
+  if ((!is.null(wl)) && (length(wl) == 1) && is.numeric(wl)) {
+    if (!(wl %in% seq_along(file_paths))) {
+      stop("please provide an index in the range of the spectra to load or a new wavelength vector")
+    }
     tmp[!errors] <- lapply(
       tmp[!errors],
       function(.x) {
         hyperSpec::spc.smooth.spline(.x,
-          newx = hyperSpec::wl(tmp[[1]]),
+          newx = hyperSpec::wl(tmp[[wl]]),
           all.knots = TRUE
         )
       }
     )
-  } else if (length(newx) > 0) {
+  } else if ((!is.null(wl)) & (length(wl) > 1)) {
     tmp[!errors] <- lapply(
       tmp[!errors],
       function(.x) {
         hyperSpec::spc.smooth.spline(.x,
-          newx = newx,
+          newx = wl,
           all.knots = TRUE
         )
       }
@@ -346,7 +350,7 @@ read_opus <- read.opus <- function(file_paths, scale_y = TRUE,
 
   out <- hyperSpec::collapse(tmp[lengths(tmp) > 0L], collapse.equal = FALSE)
 
-  if (interpolate) {
+  if ((!is.null(wl)) && (wl == "interpolate")) {
     out <- hyperSpec::orderwl(out)
     out <- hyperSpec::spc.NA.approx(out)
   }

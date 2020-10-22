@@ -5,13 +5,7 @@
 \alias{read.opus}
 \title{Read Bruker OPUS binary files}
 \usage{
-read_opus(
-  file_paths,
-  scale_y = TRUE,
-  read_info = FALSE,
-  interpolate = FALSE,
-  newx = NULL
-)
+read_opus(file_paths, scale_y = TRUE, read_info = FALSE, wl = 1)
 }
 \arguments{
 \item{file_paths}{a character vector of file paths to Bruker OPUS binary
@@ -23,15 +17,11 @@ binary file.}
 \item{read_info}{logical; read info stored in the text information data
 block.}
 
-\item{interpolate}{logical, interpolate values at
-not shared wavelengths among the individual imported spectra using
-\code{\link[hyperSpec]{spc.NA.approx}}. Not necessary if all spectra share
-the same wavelength axis or are interpolated onto a common axis using the
-argument \code{newx}. Using \code{newx} should be preferred over
-\code{interpolate} to avoid big resulting
-objects and associated very high computation time.}
-
-\item{newx}{interpolate all spectra onto a common either "first" to use the}
+\item{wl}{numeric; either of length one giving the index of the spectrum to
+use the associated wavelength vector, a numeric vector of length >1
+specifying a new wavelength vector, \code{NULL} to use a merged wavelength
+vector or "interpolate" to interpolate missing values after using the
+merged vector.}
 }
 \value{
 a hyperSpec object.
@@ -45,10 +35,14 @@ This function is a wrapper around \code{\link{read_opus_single}}
   experimental and sanity check imported spectra.
 }
 \details{
-When files to import don't share common wavelength vectors, the
-  returned object with a merged wavelength vector will show many missing
-  values. These can be interpolated using the \code{interpolate} argument,
-  but objects will be considerably large. In general its better to provide a
-  new common wavelength axis with \code{newx} or use the one of the first
-  file.
+When files to import don't share common wavelength vectors, a
+  collapsed hyperSpec object (having a wavelength vector merged from all the
+  individual vectors) may become very large with a lot of missing
+  values. \code{read_opus()} can interpolate the individual spectra onto a
+  common wavelength vector prior collapsing, either by choosing the
+  wavelength vector of one of the imported files (giving a single integer) or
+  by providing a new wavelength vector. Alternatively, if \code{wl} is
+  \code{NULL}, the merged wavelength vector is used, potentially resulting in
+  a sparse spectral matrix. If set to "interpolate" the missing values are
+  interpolated after using the merged vector.
 }
