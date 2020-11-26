@@ -92,7 +92,7 @@ write_jdx_single <- function(wl, intensities, connection = stdout(),
   }
 
   # end block
-  cat("##END=", sep = "", file = connection, append = TRUE)
+  cat("##END=\r\n", sep = "", file = connection, append = TRUE)
 }
 
 
@@ -167,6 +167,10 @@ write_jdx <- write.jdx <- function(x, path = x@data$filename, encoding = "latin1
     stop("please provide a valid path or a vector of paths with a length equal to the number of spectra in x.")
   }
 
+  if ((!is_wl_equidistant(x)) & (blocksize > 1)) {
+    stop("wavelength vector is not equidistant.")
+  }
+
   # repeat arguments if only lengh 1 is specified or test if length is nrow(x) if otherwise
   args <- c(
     "title", "data_type", "origin", "owner", "x_units", "y_units",
@@ -191,11 +195,7 @@ write_jdx <- write.jdx <- function(x, path = x@data$filename, encoding = "latin1
   wl <- hyperSpec::wl(x)
 
   # CASE 1: a path is provided for each spectrum
-  if (length(path) > 1) {
-    if (nrow(intensities_mat) != length(path)) {
-      stop("provide a file path for each spectrum")
-    }
-
+  if (length(path) == nrow(x)) {
     for (i in seq_len(nrow(x))) {
       con <- file(path[i], encoding = encoding)
       open(con, "w")
@@ -214,8 +214,8 @@ write_jdx <- write.jdx <- function(x, path = x@data$filename, encoding = "latin1
     }
   }
 
-  # CASE 2: only one path is provided, all spectra are written to a single file
-  if (length(path) == 1) {
+  # CASE 2: only one path is provided and more than one spectrum is provided, all spectra are written to a single file
+  else if ((length(path) == 1) & (nrow(x) > 1)) {
     con <- file(path, encoding = encoding)
     open(con, "w")
     nblocks <- seq_len(nrow(x))
@@ -244,5 +244,7 @@ write_jdx <- write.jdx <- function(x, path = x@data$filename, encoding = "latin1
 
     cat("##END=$$ COLLECTION OF SPECTRA", "\n", sep = "", file = con, append = TRUE)
     close(con)
+  } else {
+    stop("Please provide a path per spectrum of only one path for all spectra.")
   }
 }
