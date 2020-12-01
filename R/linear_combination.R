@@ -23,8 +23,10 @@ linear_combination <- function(targets, references, references_ids = NULL,
                                nonnegative = FALSE) {
   if (is.null(references_ids)) {
     references_ids <- paste0("x", seq_len(nrow(references)))
-  } else if (length(references_ids) == 1) {
+  } else if (length(references_ids) == 1 & is.numeric(references_ids)) {
     references_ids <- references@data[, references_ids]
+  } else if (length(references_ids) == 1 & is.character(references_ids)) {
+    references_ids <- references_ids
   } else {
     stopifnot(length(references_ids) == nrow(references))
   }
