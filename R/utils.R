@@ -67,8 +67,8 @@ plotspc_rev <- function(object, ...) {
 #'
 #' @return logical
 #' @export
-is_wl_equidistant <- function(x) {
-  all(diff(sort(hyperSpec::wl(x)), differences = 2) == 0)
+is_wl_equidistant <- function(x, tolerance = sqrt(.Machine$double.eps)) {
+  all(diff(sort(hyperSpec::wl(x)), differences = 2) < tolerance)
 }
 
 
