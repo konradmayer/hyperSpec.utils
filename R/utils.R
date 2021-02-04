@@ -64,7 +64,7 @@ plotspc_rev <- function(object, ...) {
 #' Test if the wavelength vector of a hyperSpec object is equally spaced
 #'
 #' @param x a hyperSpec object
-#'
+#' @param tolerance maximum difference to accept (to account for machine precision)
 #' @return logical
 #' @export
 is_wl_equidistant <- function(x, tolerance = sqrt(.Machine$double.eps)) {

@@ -101,16 +101,16 @@ opa <- function(x, ncomp = NULL, return_scaled = TRUE) {
 #'   from the package {alsace} to be used with objects of class hyperSpec.
 #' @param x a hyperSpec object.
 #' @param ncomp integer; number of pure components, does not need to be specified
-#'   if S_init is provided.
-#' @param S_init a hyperSpec object; initial estimates of pure spectral components,
-#'   if S_init is NULL, initial components are estimated
+#'   if basis_init is provided.
+#' @param basis_init a hyperSpec object; initial estimates of pure spectral components,
+#'   if basis_init is NULL, initial components are estimated
 #'   using \code{\link{opa}}.
 #' @param prefix character; a prefix to name the pure spectra.
 #'
 #' @return a list with the following components:
 #'   \describe{
-#'     \item{data}{the input hyperSpec object with additional "component" columns in @data, holding the coefficients}
-#'     \item{component_spectra}{a hyperSpec object containing the component spectra}
+#'     \item{coefficients}{coefficient matrix}
+#'     \item{basis}{a hyperSpec object containing the basis (component) spectra}
 #'     \item{summary_stats}{a named vector containing lof, rms and r2}
 #'     \item{fit}{the als fit as returned by the custom wrapper around `ALS::als()`}
 #'   }
@@ -118,64 +118,39 @@ opa <- function(x, ncomp = NULL, return_scaled = TRUE) {
 #' @export
 #'
 
-als <- function(x, ncomp = NULL, S_init = NULL, prefix = "component") {
+als <- function(x, ncomp = NULL, basis_init = NULL, prefix = "basis") {
   if (!is_hyperSpec(x)) {
     stop("x needs to be an object of class hyperSpec.")
   }
 
-  if (!is.null(S_init)) {
-    if ((!is.null(ncomp)) && (ncol(S_init) != ncomp)) {
-      stop("provided ncomp does not match the number of colums in the provided S_init")
+  if (!is.null(basis_init)) {
+    if ((!is.null(ncomp)) && (ncol(basis_init) != ncomp)) {
+      stop("provided ncomp does not match the number of colums in the provided basis_init")
     }
-  } else { # if S_init not provided, start values are calculated with opa (changed from alsace::opa)
-    S_init <- opa(x, ncomp = ncomp)
+  } else { # if basis_init not provided, start values are calculated with opa (changed from alsace::opa)
+    basis_init <- opa(x, ncomp = ncomp)
   }
 
-  fit <- .doALS_custom(list(x[[]]), t(S_init[[]]), prefix = prefix)
+  fit <- .doALS_custom(list(x[[]]), t(basis_init[[]]), prefix = prefix)
 
   params <- fit$CList[[1]]
   colnames(params) <- paste("ALS", colnames(params), sep = "_")
-  x@data <- cbind(x@data, params)
+  # x@data <- cbind(x@data, params)
   components <- methods::new("hyperSpec",
     spc = t(fit$S),
     wavelength = hyperSpec::wl(x),
     data = data.frame(
-      component =
+      basis =
         paste0("ALS_", prefix, seq_len(ncomp))
     )
   )
 
   out <- list(
-    data = x,
-    component_spectra = components,
+    coefficients = params,
+    basis = components,
     summary_stats = unlist(fit$summ.stats),
     fit = fit
   )
   class(out) <- "als"
   out
 }
-
-summary.als <- function(x) {
-  cat(
-    "ALS fit with", nrow(x$data), "samples with",
-    nrow(x$component_spectra), "components.", "\nEach hyperspec object contains",
-    hyperSpec::nwl(x$data), "wavelengths.\n"
-  )
-  cat(
-    "\tRMSE of fit:", round(x$summary_stats[["rms"]], 5),
-    "\n"
-  )
-  cat("\tLOF: ", round(x$summary_stats[["lof"]], 2), "%\n", sep = "")
-  cat("\tR2: ", round(x$summary_stats[["r2"]], 5), "\n", sep = "")
-  invisible()
-}
-
-
-
-
-
-
-# out <- als(dat, 4)
-# summary(out)
-# plotspc(out$component_spectra, stacked = TRUE)
-# plotmap_viridis(out$data, component4 ~ x * y)

@@ -4,16 +4,16 @@
 \alias{als}
 \title{Spectral unmixing: Alternating least squares multivariate curve resolution (MCR-ALS)}
 \usage{
-als(x, ncomp = NULL, S_init = NULL, prefix = "component")
+als(x, ncomp = NULL, basis_init = NULL, prefix = "basis")
 }
 \arguments{
 \item{x}{a hyperSpec object.}
 
 \item{ncomp}{integer; number of pure components, does not need to be specified
-if S_init is provided.}
+if basis_init is provided.}
 
-\item{S_init}{a hyperSpec object; initial estimates of pure spectral components,
-if S_init is NULL, initial components are estimated
+\item{basis_init}{a hyperSpec object; initial estimates of pure spectral components,
+if basis_init is NULL, initial components are estimated
 using \code{\link{opa}}.}
 
 \item{prefix}{character; a prefix to name the pure spectra.}
@@ -21,8 +21,8 @@ using \code{\link{opa}}.}
 \value{
 a list with the following components:
   \describe{
-    \item{data}{the input hyperSpec object with additional "component" columns in @data, holding the coefficients}
-    \item{component_spectra}{a hyperSpec object containing the component spectra}
+    \item{coefficients}{coefficient matrix}
+    \item{basis}{a hyperSpec object containing the basis (component) spectra}
     \item{summary_stats}{a named vector containing lof, rms and r2}
     \item{fit}{the als fit as returned by the custom wrapper around `ALS::als()`}
   }

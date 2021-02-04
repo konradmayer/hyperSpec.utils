@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hyperSpec.utils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@
   from the package alsace to be used with objects of class hyperSpec.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>als</span>(<span class='kw'>x</span>, ncomp = <span class='kw'>NULL</span>, S_init = <span class='kw'>NULL</span>, prefix = <span class='st'>"component"</span>)</pre>
+    <pre class="usage"><span class='fu'>als</span>(<span class='kw'>x</span>, ncomp = <span class='kw'>NULL</span>, basis_init = <span class='kw'>NULL</span>, prefix = <span class='st'>"basis"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,12 +152,12 @@
     <tr>
       <th>ncomp</th>
       <td><p>integer; number of pure components, does not need to be specified
-if S_init is provided.</p></td>
+if basis_init is provided.</p></td>
     </tr>
     <tr>
-      <th>S_init</th>
+      <th>basis_init</th>
       <td><p>a hyperSpec object; initial estimates of pure spectral components,
-if S_init is NULL, initial components are estimated
+if basis_init is NULL, initial components are estimated
 using <code><a href='opa.html'>opa</a></code>.</p></td>
     </tr>
     <tr>
@@ -169,8 +169,8 @@ using <code><a href='opa.html'>opa</a></code>.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a list with the following components:</p><dl>
-    <dt>data</dt><dd><p>the input hyperSpec object with additional "component" columns in @data, holding the coefficients</p></dd>
-    <dt>component_spectra</dt><dd><p>a hyperSpec object containing the component spectra</p></dd>
+    <dt>coefficients</dt><dd><p>coefficient matrix</p></dd>
+    <dt>basis</dt><dd><p>a hyperSpec object containing the basis (component) spectra</p></dd>
     <dt>summary_stats</dt><dd><p>a named vector containing lof, rms and r2</p></dd>
     <dt>fit</dt><dd><p>the als fit as returned by the custom wrapper around `ALS::als()`</p></dd>
   

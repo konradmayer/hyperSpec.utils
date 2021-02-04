@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plotmap using viridis — plotmap_viridis • hyperSpec.utils</title>
+<title>Spectral unmixing: Independent Component Analysis (ICA) — ica • hyperSpec.utils</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="Plotmap using viridis — plotmap_viridis" />
-<meta property="og:description" content="Use the viridis colorramp in plotmap as default. The model can
-  contain the special column name .wavelength to specify the wavelength axis." />
+<meta property="og:title" content="Spectral unmixing: Independent Component Analysis (ICA) — ica" />
+<meta property="og:description" content="This is a wrapper around fastICA
+  from the package fastICA to be used with objects of class hyperSpec." />
 
 
 
@@ -130,61 +130,54 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plotmap using viridis</h1>
-    <small class="dont-index">Source: <a href='https://github.com/konradmayer/hyperSpec.utils/blob/master/R/plotmap.R'><code>R/plotmap.R</code></a></small>
-    <div class="hidden name"><code>plotmap_viridis.Rd</code></div>
+    <h1>Spectral unmixing: Independent Component Analysis (ICA)</h1>
+    <small class="dont-index">Source: <a href='https://github.com/konradmayer/hyperSpec.utils/blob/master/R/ica.R'><code>R/ica.R</code></a></small>
+    <div class="hidden name"><code>ica.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Use the viridis colorramp in plotmap as default. The model can
-  contain the special column name .wavelength to specify the wavelength axis.</p>
+    <p>This is a wrapper around <code><a href='https://rdrr.io/pkg/fastICA/man/fastICA.html'>fastICA</a></code>
+  from the package fastICA to be used with objects of class hyperSpec.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plotmap_viridis</span>(
-  <span class='kw'>object</span>,
-  model = <span class='kw'>spc</span> <span class='op'>~</span> <span class='kw'>x</span> <span class='op'>*</span> <span class='kw'>y</span>,
-  func = <span class='kw'>mean</span>,
-  func.args = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>ica</span>(<span class='kw'>x</span>, <span class='kw'>ncomp</span>, prefix = <span class='st'>"basis"</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>the <code>hyperSpec</code> object</p></td>
+      <th>x</th>
+      <td><p>a hyperSpec object.</p></td>
     </tr>
     <tr>
-      <th>model</th>
-      <td><p>formula specifying the columns of object that are to be
-displayed by <code><a href='https://rdrr.io/pkg/lattice/man/levelplot.html'>levelplot</a></code></p></td>
+      <th>ncomp</th>
+      <td><p>integer; number of pure components.</p></td>
     </tr>
     <tr>
-      <th>func</th>
-      <td><p>Before plotting, <code>plotmap</code> applies function
-  <code>func</code> with the arguments given in the list <code>func.args</code> to each
-  of the spectra. Thus a single summary value is displayed for each of the
-  spectra.</p>
-<p>This can be suppressed manually by setting <code>func</code> to NULL. It is automatically suppressed if
-<code>.wavelength</code> appears in the formula.</p></td>
-    </tr>
-    <tr>
-      <th>func.args</th>
-      <td><p>Before plotting, <code>plotmap</code> applies function
-  <code>func</code> with the arguments given in the list <code>func.args</code> to each
-  of the spectra. Thus a single summary value is displayed for each of the
-  spectra.</p>
-<p>This can be suppressed manually by setting <code>func</code> to NULL. It is automatically suppressed if
-<code>.wavelength</code> appears in the formula.</p></td>
+      <th>prefix</th>
+      <td><p>character; a prefix to name the pure spectra.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>further arguments are passed down the call chain, and finally
-to <code><a href='https://rdrr.io/pkg/lattice/man/levelplot.html'>levelplot</a></code></p></td>
+      <td><p>further arguments to be passed down to <code><a href='https://rdrr.io/pkg/fastICA/man/fastICA.html'>fastICA</a></code>.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a list with the following components:</p><dl>
+    <dt>coefficients</dt><dd><p>coefficient matrix</p></dd>
+    <dt>basis</dt><dd><p>a hyperSpec object containing the basis (component) spectra</p></dd>
+    <dt>fit</dt><dd><p>the ica fit as returned by  <code><a href='https://rdrr.io/pkg/fastICA/man/fastICA.html'>fastICA</a></code></p></dd>
+  
+</dl>
+
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>A. Hyvarinen, "Fast and robust fixed-point algorithms for independent component analysis," in IEEE Transactions on Neural Networks, vol. 10, no. 3, pp. 626-634, May 1999 <a href='https://doi.org/10.1109/72.761722'>https://doi.org/10.1109/72.761722</a></p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/fastICA/man/fastICA.html'>fastICA</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

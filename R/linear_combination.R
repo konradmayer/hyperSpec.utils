@@ -1,36 +1,42 @@
-#' Linear combination of spectra
+
+# helpers -----------------------------------------------------------------
+
+get_references_ids <- function(references, references_ids) {
+  if (is.null(references_ids)) {
+    references_ids <- paste0("x", seq_len(nrow(references)))
+  } else if (length(references_ids) == 1 & (is.numeric(references_ids) | is.character(references_ids))) {
+    references_ids <- references@data[, references_ids]
+  } else {
+    stopifnot(length(references_ids) == nrow(references))
+  }
+  references_ids
+}
+
+#' Spectral mixture analysis: Linear combination of spectra
 #'
 #' @description Use linear regression resp. non negative
 #'   linear regression (package {nnls}) without intercept to estimate
 #'   coefficients for a linear combination of reference spectra to represent
-#'   one or multiple target spectra.
+#'   one or multiple target spectra. For a sparse solution and/or correlated
+#'   references see \code{\link{omp}}.
 #' @param targets a hyperSpec object.
 #' @param references a hyperSpec object containing the spectra to be combined in
 #'   in a linear manner.
-#' @param references_ids either a single string specifying the column with names
+#' @param references_ids either a single string or numeric specifying the column with names
 #'   for the references in the object `references`, or a character vector with
 #'   a name per reference spectrum.
 #' @param nonnegative logical; set TRUE to restrict coefficients to be positive.
 #'
 #' @return a list containing the following members:
 #'   \describe{
-#'     \item{data}{the target hyperSpec object with additional columns in `@data` for the coefficients for each of the references as well as summary statistics (RMSE and R2)}
-#'     \item{references}{the references object as supplied}
+#'     \item{coefficients}{coefficient matrix}
+#'     \item{basis}{the references object as supplied}
 #'     \item{fit}{the return value of the multivariate call to `stats::lm()` or a list of return values of the outputs of `nnls::nnls()` for each target spectrum.}
 #'   }
 #' @export
 linear_combination <- function(targets, references, references_ids = NULL,
                                nonnegative = FALSE) {
-  if (is.null(references_ids)) {
-    references_ids <- paste0("x", seq_len(nrow(references)))
-  } else if (length(references_ids) == 1 & is.numeric(references_ids)) {
-    references_ids <- references@data[, references_ids]
-  } else if (length(references_ids) == 1 & is.character(references_ids)) {
-    references_ids <- references_ids
-  } else {
-    stopifnot(length(references_ids) == nrow(references))
-  }
-
+  references_ids <- get_references_ids(references, references_ids)
 
   y <- t(targets[[]])
   x <- as.data.frame(t(references[[]]))
@@ -62,15 +68,16 @@ linear_combination <- function(targets, references, references_ids = NULL,
   }
 
   summary_stats <- data.frame(rmse = rmse, r2 = r2)
-  additional_cols <- cbind(coefs, summary_stats)
-  colnames(additional_cols) <- paste("LC", colnames(additional_cols), sep = "_")
+  # additional_cols <- cbind(coefs, summary_stats)
+  # colnames(additional_cols) <- paste("LC", colnames(additional_cols), sep = "_")
 
 
-  targets@data <- cbind(targets@data, additional_cols)
+  # targets@data <- cbind(targets@data, additional_cols)
 
   out <- list(
-    data = targets,
-    references = references,
+    coefficients = coefs,
+    basis = references,
+    summary_stats = summary_stats,
     fit = fit
   )
 

@@ -9,8 +9,8 @@ nmf(
   ncomp = NULL,
   nrun = 1,
   method = "brunet",
-  seed = "ica",
-  prefix = "component",
+  seed = "opa",
+  prefix = "basis",
   ...
 )
 }
@@ -24,7 +24,7 @@ nmf(
 \item{method}{character; use `NMF::getNMFMethod()` to get valid Methods and
 refer to the documentation of `NMF::nmf()` for further information.}
 
-\item{seed}{character; one of `NMF::getNMFSeed()`. Refer to the documentation
+\item{seed}{character; "opa" (Orthogonal Projection Approach, see \code{\link{omp}}) or one of `NMF::getNMFSeed()`. Refer to the documentation
 of `NMF::nmf()` for further information.}
 
 \item{prefix}{character; a prefix to name the pure spectra.}
@@ -34,8 +34,8 @@ of `NMF::nmf()` for further information.}
 \value{
 a list with the following components:
   \describe{
-    \item{data}{the input hyperSpec object with additional "component" columns in @data, holding the coefficients}
-    \item{component_spectra}{a hyperSpec object containing the component spectra}
+    \item{coefficients}{coefficient matrix}
+    \item{basis}{a hyperSpec object containing the basis (component) spectra}
     \item{fit}{the nmf fit as returned by `NMF::nmf()`}
   }
 }

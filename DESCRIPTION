@@ -1,6 +1,6 @@
 Package: hyperSpec.utils
 Title: Utility functions to work with objects of the hyperSpec class
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person(given = "Konrad",
            family = "Mayer",
@@ -28,7 +28,9 @@ Suggests:
     ALS,
     nnls,
     NMF,
-    ncf
+    ncf,
+    Rfast,
+    fastICA
 VignetteBuilder: knitr
 URL: https://github.com/konradmayer/hyperSpec.utils
 BugReports: https://github.com/konradmayer/hyperSpec.utils/issues

@@ -7,21 +7,21 @@
 #' @param nrun number of runs
 #' @param method character; use `NMF::getNMFMethod()` to get valid Methods and
 #'   refer to the documentation of `NMF::nmf()` for further information.
-#' @param seed character; one of `NMF::getNMFSeed()`. Refer to the documentation
+#' @param seed character; "opa" (Orthogonal Projection Approach, see \code{\link{omp}}) or one of `NMF::getNMFSeed()`. Refer to the documentation
 #'   of `NMF::nmf()` for further information.
 #' @param prefix character; a prefix to name the pure spectra.
 #' @param ... further arguments to be passed down to \link[NMF]{nmf}.
 #'
 #' @return a list with the following components:
 #'   \describe{
-#'     \item{data}{the input hyperSpec object with additional "component" columns in @data, holding the coefficients}
-#'     \item{component_spectra}{a hyperSpec object containing the component spectra}
+#'     \item{coefficients}{coefficient matrix}
+#'     \item{basis}{a hyperSpec object containing the basis (component) spectra}
 #'     \item{fit}{the nmf fit as returned by `NMF::nmf()`}
 #'   }
 #' @seealso \link[NMF]{nmf}
 #' @export
 
-nmf <- function(x, ncomp = NULL, nrun = 1, method = "brunet", seed = "ica", prefix = "component", ...) {
+nmf <- function(x, ncomp = NULL, nrun = 1, method = "brunet", seed = "opa", prefix = "basis", ...) {
   if (!is_hyperSpec(x)) {
     stop("x needs to be an object of class hyperSpec.")
   }
@@ -30,21 +30,28 @@ nmf <- function(x, ncomp = NULL, nrun = 1, method = "brunet", seed = "ica", pref
     stop("please specify the number of end members using the argument ncomp")
   }
 
-  fit <- NMF::nmf(x[[]], ncomp, nrun = nrun, method = method, seed = seed, ...)
+  # additional seeding method using opa
+  if (seed == "opa") {
+    opa_basis <- opa(x, ncomp)
+    suppressWarnings(lc_opa <- linear_combination(x, opa_basis))
+    suppressWarnings(seed <- NMF::nmfModel(rank = ncomp, H = t(lc_opa$coefficients), W = t(lc_opa$basis[[]])))
+  }
 
-  # coef is matrix H
+
+  fit <- NMF::nmf(t(x[[]]), ncomp, nrun = nrun, method = method, seed = seed, ...)
+
+  component_nm <- paste0("NMF_", prefix, seq_len(ncomp))
   components <- methods::new("hyperSpec",
-    spc = NMF::coef(fit), wavelength = hyperSpec::wl(x),
-    data = data.frame(component = paste0("NMF_", prefix, seq_len(ncomp)))
+    spc = t(NMF::basis(fit)), wavelength = hyperSpec::wl(x),
+    data = data.frame(basis = component_nm)
   )
-  # basis is matrix W
-  params <- stats::setNames(as.data.frame(NMF::basis(fit)), paste0("NMF_", prefix, seq_len(ncomp)))
-  x@data <- cbind(x@data, params)
+  params <- t(NMF::coef(fit))
+  colnames(params) <- component_nm
 
 
   out <- list(
-    data = x,
-    component_spectra = components,
+    coefficients = params,
+    basis = components,
     fit = fit
   )
   class(out) <- "nmf"

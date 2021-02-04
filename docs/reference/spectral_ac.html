@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plotmap using viridis — plotmap_viridis • hyperSpec.utils</title>
+<title>Spectral autocorrelation — spectral_ac • hyperSpec.utils</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="Plotmap using viridis — plotmap_viridis" />
-<meta property="og:description" content="Use the viridis colorramp in plotmap as default. The model can
-  contain the special column name .wavelength to specify the wavelength axis." />
+<meta property="og:title" content="Spectral autocorrelation — spectral_ac" />
+<meta property="og:description" content="Autocorrelation of a spectrum. Generally, a high autocorrelation
+  is associated with high signal, while white noise is not autocorrelated." />
 
 
 
@@ -130,61 +130,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plotmap using viridis</h1>
-    <small class="dont-index">Source: <a href='https://github.com/konradmayer/hyperSpec.utils/blob/master/R/plotmap.R'><code>R/plotmap.R</code></a></small>
-    <div class="hidden name"><code>plotmap_viridis.Rd</code></div>
+    <h1>Spectral autocorrelation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/konradmayer/hyperSpec.utils/blob/master/R/autocorrelation.R'><code>R/autocorrelation.R</code></a></small>
+    <div class="hidden name"><code>spectral_ac.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Use the viridis colorramp in plotmap as default. The model can
-  contain the special column name .wavelength to specify the wavelength axis.</p>
+    <p>Autocorrelation of a spectrum. Generally, a high autocorrelation
+  is associated with high signal, while white noise is not autocorrelated.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plotmap_viridis</span>(
-  <span class='kw'>object</span>,
-  model = <span class='kw'>spc</span> <span class='op'>~</span> <span class='kw'>x</span> <span class='op'>*</span> <span class='kw'>y</span>,
-  func = <span class='kw'>mean</span>,
-  func.args = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>spectral_ac</span>(<span class='kw'>x</span>, lag = <span class='fl'>1</span>, colname = <span class='st'>"spectral_ac"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>the <code>hyperSpec</code> object</p></td>
+      <th>x</th>
+      <td><p>a hyperSpec object.</p></td>
     </tr>
     <tr>
-      <th>model</th>
-      <td><p>formula specifying the columns of object that are to be
-displayed by <code><a href='https://rdrr.io/pkg/lattice/man/levelplot.html'>levelplot</a></code></p></td>
+      <th>lag</th>
+      <td><p>lag at which the autocorrelation is calculated.</p></td>
     </tr>
     <tr>
-      <th>func</th>
-      <td><p>Before plotting, <code>plotmap</code> applies function
-  <code>func</code> with the arguments given in the list <code>func.args</code> to each
-  of the spectra. Thus a single summary value is displayed for each of the
-  spectra.</p>
-<p>This can be suppressed manually by setting <code>func</code> to NULL. It is automatically suppressed if
-<code>.wavelength</code> appears in the formula.</p></td>
-    </tr>
-    <tr>
-      <th>func.args</th>
-      <td><p>Before plotting, <code>plotmap</code> applies function
-  <code>func</code> with the arguments given in the list <code>func.args</code> to each
-  of the spectra. Thus a single summary value is displayed for each of the
-  spectra.</p>
-<p>This can be suppressed manually by setting <code>func</code> to NULL. It is automatically suppressed if
-<code>.wavelength</code> appears in the formula.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>further arguments are passed down the call chain, and finally
-to <code><a href='https://rdrr.io/pkg/lattice/man/levelplot.html'>levelplot</a></code></p></td>
+      <th>colname</th>
+      <td><p>name of the data column to be added to <code>x@data</code>,
+containing the autocorrelation coefficient.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a hyperSpec object such as given for <code>x</code> with an additional
+  column in <code>x@data</code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

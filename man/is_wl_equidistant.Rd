@@ -4,10 +4,12 @@
 \alias{is_wl_equidistant}
 \title{Test if the wavelength vector of a hyperSpec object is equally spaced}
 \usage{
-is_wl_equidistant(x)
+is_wl_equidistant(x, tolerance = sqrt(.Machine$double.eps))
 }
 \arguments{
 \item{x}{a hyperSpec object}
+
+\item{tolerance}{maximum difference to accept (to account for machine precision)}
 }
 \value{
 logical

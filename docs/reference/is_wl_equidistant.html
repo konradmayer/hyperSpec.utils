@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hyperSpec.utils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -138,7 +138,7 @@
     <p>Test if the wavelength vector of a hyperSpec object is equally spaced</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_wl_equidistant</span>(<span class='kw'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>is_wl_equidistant</span>(<span class='kw'>x</span>, tolerance = <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,6 +146,10 @@
     <tr>
       <th>x</th>
       <td><p>a hyperSpec object</p></td>
+    </tr>
+    <tr>
+      <th>tolerance</th>
+      <td><p>maximum difference to accept (to account for machine precision)</p></td>
     </tr>
     </table>
 

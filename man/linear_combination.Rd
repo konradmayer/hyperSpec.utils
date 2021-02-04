@@ -2,7 +2,7 @@
 % Please edit documentation in R/linear_combination.R
 \name{linear_combination}
 \alias{linear_combination}
-\title{Linear combination of spectra}
+\title{Spectral mixture analysis: Linear combination of spectra}
 \usage{
 linear_combination(
   targets,
@@ -17,7 +17,7 @@ linear_combination(
 \item{references}{a hyperSpec object containing the spectra to be combined in
 in a linear manner.}
 
-\item{references_ids}{either a single string specifying the column with names
+\item{references_ids}{either a single string or numeric specifying the column with names
 for the references in the object `references`, or a character vector with
 a name per reference spectrum.}
 
@@ -26,8 +26,8 @@ a name per reference spectrum.}
 \value{
 a list containing the following members:
   \describe{
-    \item{data}{the target hyperSpec object with additional columns in `@data` for the coefficients for each of the references as well as summary statistics (RMSE and R2)}
-    \item{references}{the references object as supplied}
+    \item{coefficients}{coefficient matrix}
+    \item{basis}{the references object as supplied}
     \item{fit}{the return value of the multivariate call to `stats::lm()` or a list of return values of the outputs of `nnls::nnls()` for each target spectrum.}
   }
 }
@@ -35,5 +35,6 @@ a list containing the following members:
 Use linear regression resp. non negative
   linear regression (package {nnls}) without intercept to estimate
   coefficients for a linear combination of reference spectra to represent
-  one or multiple target spectra.
+  one or multiple target spectra. For a sparse solution and/or correlated
+  references see \code{\link{omp}}.
 }

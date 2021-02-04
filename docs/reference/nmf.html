@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hyperSpec.utils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -145,8 +145,8 @@
   ncomp = <span class='kw'>NULL</span>,
   nrun = <span class='fl'>1</span>,
   method = <span class='st'>"brunet"</span>,
-  seed = <span class='st'>"ica"</span>,
-  prefix = <span class='st'>"component"</span>,
+  seed = <span class='st'>"opa"</span>,
+  prefix = <span class='st'>"basis"</span>,
   <span class='kw'>...</span>
 )</pre>
 
@@ -172,7 +172,7 @@ refer to the documentation of `NMF::nmf()` for further information.</p></td>
     </tr>
     <tr>
       <th>seed</th>
-      <td><p>character; one of `NMF::getNMFSeed()`. Refer to the documentation
+      <td><p>character; "opa" (Orthogonal Projection Approach, see <code><a href='omp.html'>omp</a></code>) or one of `NMF::getNMFSeed()`. Refer to the documentation
 of `NMF::nmf()` for further information.</p></td>
     </tr>
     <tr>
@@ -188,8 +188,8 @@ of `NMF::nmf()` for further information.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a list with the following components:</p><dl>
-    <dt>data</dt><dd><p>the input hyperSpec object with additional "component" columns in @data, holding the coefficients</p></dd>
-    <dt>component_spectra</dt><dd><p>a hyperSpec object containing the component spectra</p></dd>
+    <dt>coefficients</dt><dd><p>coefficient matrix</p></dd>
+    <dt>basis</dt><dd><p>a hyperSpec object containing the basis (component) spectra</p></dd>
     <dt>fit</dt><dd><p>the nmf fit as returned by `NMF::nmf()`</p></dd>
   
 </dl>

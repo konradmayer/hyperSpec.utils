@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Linear combination of spectra — linear_combination • hyperSpec.utils</title>
+<title>Spectral mixture analysis: Linear combination of spectra — linear_combination • hyperSpec.utils</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,12 @@
 
 
 
-<meta property="og:title" content="Linear combination of spectra — linear_combination" />
+<meta property="og:title" content="Spectral mixture analysis: Linear combination of spectra — linear_combination" />
 <meta property="og:description" content="Use linear regression resp. non negative
   linear regression (package nnls) without intercept to estimate
   coefficients for a linear combination of reference spectra to represent
-  one or multiple target spectra." />
+  one or multiple target spectra. For a sparse solution and/or correlated
+  references see omp." />
 
 
 
@@ -75,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hyperSpec.utils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -132,7 +133,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Linear combination of spectra</h1>
+    <h1>Spectral mixture analysis: Linear combination of spectra</h1>
     <small class="dont-index">Source: <a href='https://github.com/konradmayer/hyperSpec.utils/blob/master/R/linear_combination.R'><code>R/linear_combination.R</code></a></small>
     <div class="hidden name"><code>linear_combination.Rd</code></div>
     </div>
@@ -141,7 +142,8 @@
     <p>Use linear regression resp. non negative
   linear regression (package nnls) without intercept to estimate
   coefficients for a linear combination of reference spectra to represent
-  one or multiple target spectra.</p>
+  one or multiple target spectra. For a sparse solution and/or correlated
+  references see <code><a href='omp.html'>omp</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>linear_combination</span>(
@@ -165,7 +167,7 @@ in a linear manner.</p></td>
     </tr>
     <tr>
       <th>references_ids</th>
-      <td><p>either a single string specifying the column with names
+      <td><p>either a single string or numeric specifying the column with names
 for the references in the object `references`, or a character vector with
 a name per reference spectrum.</p></td>
     </tr>
@@ -178,8 +180,8 @@ a name per reference spectrum.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a list containing the following members:</p><dl>
-    <dt>data</dt><dd><p>the target hyperSpec object with additional columns in `@data` for the coefficients for each of the references as well as summary statistics (RMSE and R2)</p></dd>
-    <dt>references</dt><dd><p>the references object as supplied</p></dd>
+    <dt>coefficients</dt><dd><p>coefficient matrix</p></dd>
+    <dt>basis</dt><dd><p>the references object as supplied</p></dd>
     <dt>fit</dt><dd><p>the return value of the multivariate call to `stats::lm()` or a list of return values of the outputs of `nnls::nnls()` for each target spectrum.</p></dd>
   
 </dl>

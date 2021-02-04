@@ -45,7 +45,7 @@
   reading meta data stored in the text information data block. At the current
   state, no other information (e.g. instrumental parameters) such as INS,
   LWN, HUM, SRC, BMS, ZFF, DAT, TIM are processed. Consider this function as
-  experimental." />
+  experimental and sanity check imported spectra." />
 
 
 
@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hyperSpec.utils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -145,10 +145,10 @@
   reading meta data stored in the text information data block. At the current
   state, no other information (e.g. instrumental parameters) such as INS,
   LWN, HUM, SRC, BMS, ZFF, DAT, TIM are processed. Consider this function as
-  experimental.</p>
+  experimental and sanity check imported spectra.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_opus</span>(<span class='kw'>file_paths</span>, scale_y = <span class='fl'>TRUE</span>, read_info = <span class='fl'>FALSE</span>, interpolate = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>read_opus</span>(<span class='kw'>file_paths</span>, scale_y = <span class='fl'>TRUE</span>, read_info = <span class='fl'>FALSE</span>, wl = <span class='fl'>1</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,17 +169,30 @@ binary file.</p></td>
 block.</p></td>
     </tr>
     <tr>
-      <th>interpolate</th>
-      <td><p>logical, unify the wavelength axis (interpolate at
-not shared wavelengths) among the individual imported spectra using
-<code><a href='https://rdrr.io/pkg/hyperSpec/man/spc.NA.approx.html'>spc.NA.approx</a></code>. Not necessary if all spectra share
-the same wavelength axis.</p></td>
+      <th>wl</th>
+      <td><p>numeric; either of length one giving the index of the spectrum to
+use the associated wavelength vector, a numeric vector of length &gt;1
+specifying a new wavelength vector, <code>NULL</code> to use a merged wavelength
+vector or "interpolate" to interpolate missing values after using the
+merged vector.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a hyperSpec object.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>When files to import don't share common wavelength vectors, a
+  collapsed hyperSpec object (having a wavelength vector merged from all the
+  individual vectors) may become very large with a lot of missing
+  values. <code>read_opus()</code> can interpolate the individual spectra onto a
+  common wavelength vector prior collapsing, either by choosing the
+  wavelength vector of one of the imported files (giving a single integer) or
+  by providing a new wavelength vector. Alternatively, if <code>wl</code> is
+  <code>NULL</code>, the merged wavelength vector is used, potentially resulting in
+  a sparse spectral matrix. If set to "interpolate" the missing values are
+  interpolated after using the merged vector.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
