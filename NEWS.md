@@ -1,3 +1,6 @@
+# hyperSpec.utils 0.0.0.9002
+
+* added vca()
 
 # hyperSpec.utils 0.0.0.9001
 

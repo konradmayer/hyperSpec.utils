@@ -54,8 +54,8 @@ The package will get continuously extended and currently holds functions
   - for extended import and export (export to Witec ASCII graph format
     with `write.txt.Witec.Graph()` or to JCAMP-DX with `write_jdx()`,
     experimental import of OPUS binary files with `read_opus()`)
-  - for spectral unmixing (wrappers `als()` for MCR-ALS, `nmf()` for NMF
-    and `ica()` for ICA)
+  - for spectral unmixing (wrappers `als()` for MCR-ALS, `nmf()` for
+    NMF, `vca()` for VCA and `ica()` for ICA)
   - for doing mixture analysis (`omp()` for the orthogonal matching
     pursuit, and `linear_combination()` for fitting linear combinations
     of reference spectra)
