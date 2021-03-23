@@ -20,7 +20,7 @@
 ica <- function(x, ncomp, prefix = "basis", ...) {
   results <- fastICA::fastICA(x[[]], ncomp)
 
-  component_nm <- paste0("NMF_", prefix, seq_len(ncomp))
+  component_nm <- paste0("ICA_", prefix, seq_len(ncomp))
   components <- methods::new("hyperSpec",
     spc = results$A, wavelength = hyperSpec::wl(x),
     data = data.frame(basis = component_nm)
