@@ -1,3 +1,7 @@
+# hyperSpec.utils 0.0.0.9003
+
+* enable manual specification of DataUnit and XAxisUnit in `write.txt.witec.graph()`
+
 # hyperSpec.utils 0.0.0.9002
 
 * added vca()

@@ -36,7 +36,8 @@ write.txt.Witec.Graph_header <- function(x, path = NULL,
   if (!is.null(scan_params)) {
     allowed <- c(
       "ScanUnit", "ScanWidth", "ScanHeight",
-      "ScanOriginX", "ScanOriginY", "ScanOriginZ"
+      "ScanOriginX", "ScanOriginY", "ScanOriginZ",
+      "XAxisUnit", "DataUnit"
     )
     incorrect_scan_param <- !(names(scan_params) %in% allowed)
     if (any(incorrect_scan_param)) {
@@ -59,14 +60,23 @@ write.txt.Witec.Graph_header <- function(x, path = NULL,
   cat("SizeX = ", SizeX, "\n", sep = "")
   cat("SizeY = ", SizeY, "\n", sep = "")
   cat("SizeGraph = ", SizeGraph, "\n", sep = "")
+  if (exists("XAxisUnit") & !("XAxisUnit" %in% names(scan_params))) cat("XAxisUnit = ", XAxisUnit, "\n", sep = "")
+  if (exists("DataUnit") & !("DataUnit" %in% names(scan_params))) cat("DataUnit = ", DataUnit, "\n", sep = "")
   if (!is.null(scan_params)) {
     nm_scan_params <- names(scan_params)
     for (i in seq_along(scan_params)) {
       cat(nm_scan_params[[i]], " = ", scan_params[[i]], "\n", sep = "")
     }
+
+    if (exists("DataUnit") & ("DataUnit" %in% nm_scan_params)) {
+      warning("existing DataUnit was overwritten by the one manually provided in scan_params")
+    }
+    if (exists("XAxisUnit") & ("XAxisUnit" %in% nm_scan_params)) {
+      warning("existing XAxisUnit was overwritten by the one manually provided in scan_params")
+    }
   }
-  if (exists("XAxisUnit")) cat("XAxisUnit = ", XAxisUnit, "\n", sep = "")
-  if (exists("DataUnit")) cat("DataUnit = ", DataUnit, "\n", sep = "")
+
+
 
   sink()
 }
