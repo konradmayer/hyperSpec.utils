@@ -18,7 +18,7 @@
 #' @export
 
 ica <- function(x, ncomp, prefix = "basis", ...) {
-  results <- fastICA::fastICA(x[[]], ncomp)
+  results <- fastICA::fastICA(x[[]], ncomp, ...)
 
   component_nm <- paste0("ICA_", prefix, seq_len(ncomp))
   components <- methods::new("hyperSpec",

@@ -1,6 +1,7 @@
 # hyperSpec.utils 0.0.0.9005
 
 * dots for `als()`
+* dots for `ica()`
 
 # hyperSpec.utils 0.0.0.9004
 
