@@ -1,3 +1,7 @@
+# hyperSpec.utils 0.0.0.9005
+
+* dots for `als()`
+
 # hyperSpec.utils 0.0.0.9004
 
 * fixed typo

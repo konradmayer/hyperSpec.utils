@@ -4,7 +4,7 @@
 \alias{als}
 \title{Spectral unmixing: Alternating least squares multivariate curve resolution (MCR-ALS)}
 \usage{
-als(x, ncomp = NULL, basis_init = NULL, prefix = "basis")
+als(x, ncomp = NULL, basis_init = NULL, prefix = "basis", ...)
 }
 \arguments{
 \item{x}{a hyperSpec object.}
@@ -17,6 +17,8 @@ if basis_init is NULL, initial components are estimated
 using \code{\link{opa}}.}
 
 \item{prefix}{character; a prefix to name the pure spectra.}
+
+\item{...}{further arguments passed down to \link[ALS]{als}}
 }
 \value{
 a list with the following components:

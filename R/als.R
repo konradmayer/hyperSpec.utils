@@ -9,7 +9,7 @@
                           nonnegC = TRUE,
                           uniC = FALSE,
                           baseline = FALSE,
-                          prefix = "component") {
+                          prefix = "component", ...) {
   Cini <- lapply(Xl, function(xl) xl[, 1:ncol(PureS)])
   utils::capture.output(result <- ALS::als(
     PsiList = Xl,
@@ -21,7 +21,8 @@
     optS1st = optS1st,
     nonnegC = nonnegC,
     uniC = uniC,
-    baseline = baseline
+    baseline = baseline,
+    ...
   ))
   colnames(result$S) <- paste0(prefix, 1:ncol(PureS))
   for (i in 1:length(result$CList)) colnames(result$CList[[i]]) <- colnames(result$S)
@@ -106,7 +107,7 @@ opa <- function(x, ncomp = NULL, return_scaled = TRUE) {
 #'   if basis_init is NULL, initial components are estimated
 #'   using \code{\link{opa}}.
 #' @param prefix character; a prefix to name the pure spectra.
-#'
+#' @param ... further arguments passed down to \link[ALS]{als}
 #' @return a list with the following components:
 #'   \describe{
 #'     \item{coefficients}{coefficient matrix}
@@ -118,7 +119,7 @@ opa <- function(x, ncomp = NULL, return_scaled = TRUE) {
 #' @export
 #'
 
-als <- function(x, ncomp = NULL, basis_init = NULL, prefix = "basis") {
+als <- function(x, ncomp = NULL, basis_init = NULL, prefix = "basis", ...) {
   if (!is_hyperSpec(x)) {
     stop("x needs to be an object of class hyperSpec.")
   }
@@ -131,7 +132,7 @@ als <- function(x, ncomp = NULL, basis_init = NULL, prefix = "basis") {
     basis_init <- opa(x, ncomp = ncomp)
   }
 
-  fit <- .doALS_custom(list(x[[]]), t(basis_init[[]]), prefix = prefix)
+  fit <- .doALS_custom(list(x[[]]), t(basis_init[[]]), prefix = prefix, ...)
 
   params <- fit$CList[[1]]
   colnames(params) <- paste("ALS", colnames(params), sep = "_")
